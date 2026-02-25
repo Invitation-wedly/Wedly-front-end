@@ -30,8 +30,8 @@ export const WEDDING_LOCATION_BUS = [
   '○○○○ 하차: ○○○, ○○○, ○○○',
 ];
 export const WEDDING_PARKING = ['맞은편 전용 주차장(주차타워) 이용.', '(주소 : 서초동 1426-5번지 or 서초구 서초중앙로2길 10)'];
-export const WEDDING_MAP_LOT = 126.810144; // 경도
-export const WEDDING_MAP_LAT = 37.558830; // 위도
+export const WEDDING_MAP_LOT = 127.0179212; // 경도
+export const WEDDING_MAP_LAT = 37.4838261; // 위도
 
 export function getWeddingScheduleDetails() {
   const dateString = `${WEDDING_DATE2} ${WEDDING_TIME}`;
