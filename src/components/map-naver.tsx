@@ -8,13 +8,14 @@ import { useEffect, useRef } from 'react';
 export default function MapNaver() {
   const mapRef = useRef<HTMLDivElement>(null);
 
-  const lot = WEDDING_MAP_LOT;
-  const lat = WEDDING_MAP_LAT;
+  const longitude = WEDDING_MAP_LOT;
+  const latitude = WEDDING_MAP_LAT;
 
   useEffect(() => {
     if (!mapRef.current) return;
 
-    const position = new window.naver.maps.LatLng(lot, lat);
+    // Naver LatLng(lat, lng): 위도, 경도 순서
+    const position = new window.naver.maps.LatLng(latitude, longitude);
 
     // 지도 생성
     const map = new window.naver.maps.Map(mapRef.current, {
