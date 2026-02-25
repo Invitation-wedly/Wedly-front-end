@@ -24,8 +24,8 @@ function Calendar({
           buttonVariants({ variant: 'outline' }),
           'size-7 bg-transparent p-0 opacity-50 hover:opacity-100',
         ),
-        nav_button_previous: 'absolute left-1',
-        nav_button_next: 'absolute right-1',
+        nav_button_previous: 'disabled absolute left-1',
+        nav_button_next: 'disabled absolute right-1',
         table: 'w-full border-collapse space-y-1',
         head_row: 'flex w-full justify-between',
         head_cell:
@@ -46,11 +46,11 @@ function Calendar({
         day_range_end:
           'day-range-end aria-selected:bg-primary aria-selected:text-primary-foreground',
         day_selected:
-          'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground',
+          'focused bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground',
         day_today: 'bg-accent text-accent-foreground',
         day_outside:
           'day-outside text-muted-foreground aria-selected:text-muted-foreground',
-        day_disabled: 'text-muted-foreground opacity-50',
+        day_disabled: 'disabled-text text-muted-foreground opacity-50',
         day_range_middle:
           'aria-selected:bg-accent aria-selected:text-accent-foreground',
         day_hidden: 'invisible',

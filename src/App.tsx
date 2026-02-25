@@ -5,7 +5,7 @@ import VideoPlayer from '@/components/video-player';
 import WeddingInvitation from '@/components/wedding-invitation';
 import Phrase from '@/components/phrase';
 import Contact from '@/components/contact';
-import CalendarScreen from '@/components/calendar-screen';
+import WeddingDayTemplate from './common/components/ui/specific/wedding/WeddingDayTemplate';
 import Gallery from '@/components/gallery';
 import MapNaver from '@/components/map-naver';
 import MapInfo from '@/components/map-info';
@@ -73,7 +73,7 @@ function App() {
         {/* 결혼식 날짜 */}
         <section className='my-20'>
           <Intersect>
-            <CalendarScreen />
+            <WeddingDayTemplate />
           </Intersect>
         </section>
         {/* 결혼식 갤러리 */}

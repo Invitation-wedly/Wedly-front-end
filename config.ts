@@ -1,3 +1,5 @@
+import { parse } from "date-fns";
+
 export const SPLASH_TEXT = [`○○, ○○ 결혼합니다.`];
 
 // 비디오 정보 (첫 화면 비디오가 있으면 배너 이미지 보다는 비디오가 우선적으로 보여짐)
@@ -13,7 +15,9 @@ export const WEDDING_INVITATION_IMAGE =
   'https://imagedelivery.net/9PYUDgg_yiUa2u-j77sFBg/b64b73bf-f02c-42a7-55f9-1dcf79afa700/public';
 
 // 지도 & 날짜 정보
-export const WEDDING_DATE = '2025.03.15';
+export const WEDDING_DATE = '2026.05.10';
+export const WEDDING_DATE2 = '2026-05-10';
+export const WEDDING_TIME = '11:00';
 export const WEDDING_LOCATION = '○○○○ ○○○ ○F, ○○○○';
 export const WEDDING_LOCATION_NAME = '○○○○○○○홀';
 export const WEDDING_ADDRESS = '○○○○ ○○○ ○○○○';
@@ -26,6 +30,18 @@ export const WEDDING_LOCATION_BUS = [
 export const WEDDING_PARKING = '○○○대 동시 주차 가능 (무료)';
 export const WEDDING_MAP_LOT = 37.5739539541608; // 경도
 export const WEDDING_MAP_LAT = 127.085105452975; // 위도
+
+export function getWeddingScheduleDetails() {
+  const dateString = `${WEDDING_DATE2} ${WEDDING_TIME}`;
+  const date = parse(dateString, 'yyyy-MM-dd HH:mm', new Date());
+  const isValidDate = !isNaN(date.getTime());
+
+  return {
+    dateString,
+    date,
+    isValidDate
+  }
+}
 
 // 신랑 & 신부 정보
 export const GROOM_NAME = '○○○';
