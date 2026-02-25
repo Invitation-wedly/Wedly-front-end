@@ -55,14 +55,14 @@ export const BRIDE_MOTHER_NAME = '박영이';
 
 // 연락처
 export const GROOM_CONTACT = [
-  { designation: '신랑', name: { GROOM_NAME }, phone: '010-2191-8382' },
-  { designation: '신랑 父', name: { GROOM_FATHER_NAME }, phone: '010-3115-3994' },
-  { designation: '신랑 母', name: { GROOM_MOTHER_NAME }, phone: '010-3467-8382' },
+  { designation: '신랑', name: GROOM_NAME, phone: '010-2191-8382' },
+  { designation: '신랑 父', name: GROOM_FATHER_NAME, phone: '010-3115-3994' },
+  { designation: '신랑 母', name: GROOM_MOTHER_NAME, phone: '010-3467-8382' },
 ];
 export const BRIDE_CONTACT = [
-  { designation: '신부', name: '○○○', phone: '○○○-○○○-○○○○' },
-  { designation: '신부 父', name: '○○○', phone: '○○○-○○○-○○○○' },
-  { designation: '신부 母', name: '○○○', phone: '○○○-○○○-○○○○' },
+  { designation: '신부', name: BRIDE_NAME, phone: '○○○-○○○-○○○○' },
+  { designation: '신부 父', name: BRIDE_FATHER_NAME, phone: '○○○-○○○-○○○○' },
+  { designation: '신부 母', name: BRIDE_MOTHER_NAME, phone: '○○○-○○○-○○○○' },
 ];
 
 // 계좌번호 정보
