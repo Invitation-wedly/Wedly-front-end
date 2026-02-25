@@ -11,7 +11,6 @@ import {
   WEDDING_LOCATION_BUS,
   WEDDING_LOCATION_NAME,
   WEDDING_LOCATION_SUBWAY,
-  WEDDING_LOCATION_TEL,
   WEDDING_PARKING,
 } from '../../config';
 import { Map, MoveUpRight } from 'lucide-react';
@@ -58,16 +57,15 @@ export default function MapInfo() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <p className='text-xs mt-2 text-gray-500 dark:text-foreground'>
-        {WEDDING_LOCATION_TEL}
-      </p>
 
       <div className='mt-10 space-y-8 text-gray-500 dark:text-foreground'>
         <div className='flex items-center'>
           <span className='w-14 text-foreground'>지하철</span>
           <Separator orientation='vertical' className='bg-foreground' />
           <div className='text-xs space-y-1'>
-            <p>{WEDDING_LOCATION_SUBWAY}</p>
+            {WEDDING_LOCATION_SUBWAY.map((subway, index) => (
+              <p key={index}>{subway}</p>
+            ))}
           </div>
         </div>
         <div className='flex items-center'>
@@ -83,7 +81,9 @@ export default function MapInfo() {
           <span className='w-14 text-foreground'>주차</span>
           <Separator orientation='vertical' className='bg-foreground' />
           <div className='text-xs space-y-1'>
-            <p>{WEDDING_PARKING}</p>
+            {WEDDING_PARKING.map((parking, index) => (
+              <p key={index}>{parking}</p>
+            ))}
             <div className='flex gap-0.5'>
               *
               <span>
