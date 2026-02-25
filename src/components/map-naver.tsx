@@ -21,10 +21,10 @@ export default function MapNaver() {
     const map = new window.naver.maps.Map(mapRef.current, {
       center: position,
       zoom: 15,
-      // zoomControl: true,
-      // zoomControlOptions: {
-      //   position: window.naver.maps.Position.TOP_RIGHT,
-      // },
+      zoomControl: false,
+      zoomControlOptions: {
+        position: window.naver.maps.Position.TOP_RIGHT,
+      },
     });
 
     // 마커 생성 (기본 디자인)
@@ -46,11 +46,7 @@ export default function MapNaver() {
 
     // 마커 클릭 시 정보창 표시
     window.naver.maps.Event.addListener(marker, 'click', () => {
-      if (infoWindow.getMap()) {
-        infoWindow.close();
-      } else {
-        infoWindow.open(map, marker);
-      }
+      infoWindow.open(map, marker);
     });
 
     return () => {
