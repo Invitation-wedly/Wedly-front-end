@@ -12,7 +12,7 @@ export const BANNERIMAGE =
 
 // 결혼 초대장 문구 다음으로 보여질 이미지
 export const WEDDING_INVITATION_IMAGE =
-  '/main.png';
+  '/image/gallery-21.jpeg';
 
 // 지도 & 날짜 정보
 export const WEDDING_DATE = '2026.05.10';
@@ -81,12 +81,13 @@ export const BRIDE_ACCOUNTS = [
 
 // 갤러리 이미지
 const GALLERY_IMAGE_FILES = Array.from(
-  { length: 20 },
+  { length: 21 },
   (_, index) => `gallery-${index + 1}.jpeg`,
 );
 
 export const GALLERY_IMAGES = GALLERY_IMAGE_FILES.map((file) => ({
   src: `/image/${file}`,
+  display: `/image/view/${file}`,
   thumbnail: `/image/thumb/${file}`,
   alt: `Wedding photo ${file.replace('.jpeg', '').replace('gallery-', '')}`,
 }));

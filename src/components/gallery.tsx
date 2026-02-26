@@ -12,6 +12,7 @@ const SLIDE_DURATION_MS = 300;
 
 type GalleryImageItem = {
   src: string;
+  display?: string;
   thumbnail?: string;
   alt?: string;
 };
@@ -26,6 +27,9 @@ export default function Gallery({ images }: { images: GalleryImageItem[] }) {
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
   const transitionTimerRef = useRef<number | null>(null);
 
+  const getModalSrc = (index: number) =>
+    images[index]?.display || images[index]?.src;
+
   useEffect(() => {
     return () => {
       if (transitionTimerRef.current) {
@@ -34,6 +38,24 @@ export default function Gallery({ images }: { images: GalleryImageItem[] }) {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (selectedIndex === null || images.length === 0) return;
+
+    const preloadTargets = [
+      currentIndex,
+      (currentIndex + 1) % images.length,
+      (currentIndex - 1 + images.length) % images.length,
+    ];
+
+    preloadTargets.forEach((index) => {
+      const src = getModalSrc(index);
+      if (!src) return;
+      const img = new Image();
+      img.decoding = 'async';
+      img.src = src;
+    });
+  }, [selectedIndex, currentIndex, images]);
 
   const handleImageClick = (index: number) => {
     setSelectedIndex(index);
@@ -214,7 +236,7 @@ export default function Gallery({ images }: { images: GalleryImageItem[] }) {
                 {slideFrames.map((imageIndex, order) => (
                   <img
                     key={`${selectedIndex}-${imageIndex}-${order}`}
-                    src={images[imageIndex].src}
+                    src={getModalSrc(imageIndex)}
                     alt={images[imageIndex].alt || `Wedding photo ${imageIndex + 1}`}
                     loading='eager'
                     decoding='async'
