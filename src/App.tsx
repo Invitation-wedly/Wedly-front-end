@@ -16,8 +16,11 @@ import Share from '@/components/share';
 import BannerImage from '@/components/banner-image';
 import BackgroundMusic from '@/components/background-music';
 import { useState } from 'react';
+import { Camera, ExternalLink } from 'lucide-react';
 import {
   BRIDE_ACCOUNTS,
+  BEST_PHOTO_FORM_DESCRIPTION,
+  BEST_PHOTO_FORM_URL,
   GALLERY_IMAGES,
   GROOM_ACCOUNTS,
   POSTER_URL,
@@ -127,6 +130,29 @@ function App() {
         <footer className='relative mt-20 pb-10'>
           <div className='flex items-center justify-center'>
             <Share />
+          </div>
+          <div className='mx-auto mt-8 w-full max-w-md px-6'>
+            <div className='relative overflow-hidden rounded-2xl border border-rose-200/70 bg-gradient-to-br from-rose-50 via-white to-amber-50 px-5 py-6 shadow-[0_10px_30px_-15px_rgba(190,24,93,0.45)]'>
+              <div className='pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-rose-200/50 blur-2xl' />
+              <div className='relative z-10 text-center'>
+                <div className='inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-rose-600 ring-1 ring-rose-200'>
+                  <Camera className='h-3.5 w-3.5' />
+                  BEST PHOTO
+                </div>
+                <p className='mt-3 text-sm leading-6 text-gray-700'>
+                  {BEST_PHOTO_FORM_DESCRIPTION}
+                </p>
+                <a
+                  href={BEST_PHOTO_FORM_URL}
+                  target='_blank'
+                  rel='noreferrer'
+                  className='group mx-auto mt-4 inline-flex h-11 w-full max-w-xs items-center justify-center gap-1.5 rounded-full bg-rose-500 px-4 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-rose-600'
+                >
+                  사진 업로드하러 가기
+                  <ExternalLink className='h-4 w-4 transition-transform group-hover:translate-x-0.5' />
+                </a>
+              </div>
+            </div>
           </div>
         </footer>
       </Layout>

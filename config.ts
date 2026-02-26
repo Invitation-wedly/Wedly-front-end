@@ -33,6 +33,9 @@ export const WEDDING_LOCATION_BUS = [
 export const WEDDING_PARKING = ['맞은편 전용 주차장(주차타워) 이용.', '(주소 : 서초동 1426-5번지 or 서초구 서초중앙로2길 10)'];
 export const WEDDING_MAP_LOT = 127.0179212; // 경도
 export const WEDDING_MAP_LAT = 37.4838261; // 위도
+export const BEST_PHOTO_FORM_URL = 'https://forms.gle/L8cEBH2nQtxpUTFx9';
+export const BEST_PHOTO_FORM_DESCRIPTION =
+  '여러분이 생각하시는 최고의 사진을 10장 올려주세요';
 
 export function getWeddingScheduleDetails() {
   const dateString = `${WEDDING_DATE2} ${WEDDING_TIME}`;
