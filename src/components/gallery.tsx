@@ -1,28 +1,136 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Dialog, DialogContent } from '@/common/components/ui/dialog';
 import { Button } from '@/common/components/ui/button';
 import { ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import Intersect from '@/common/components/intersect';
+import { cn } from '@/lib/utils';
 
 const SLICE_SIZE = 9;
+const SWIPE_THRESHOLD = 40;
+const MAX_VERTICAL_DELTA = 80;
+const SLIDE_DURATION_MS = 300;
 
 export default function Gallery({ images }: { images: string[] }) {
   const [displayCount, setDisplayCount] = useState<number>(SLICE_SIZE);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [nextIndex, setNextIndex] = useState<number | null>(null);
+  const [slideDirection, setSlideDirection] = useState<1 | -1>(1);
+  const [isSliding, setIsSliding] = useState(false);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const transitionTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (transitionTimerRef.current) {
+        window.clearTimeout(transitionTimerRef.current);
+        transitionTimerRef.current = null;
+      }
+    };
+  }, []);
 
   const handleImageClick = (image: string, index: number) => {
     setSelectedImage(image);
     setCurrentIndex(index);
+    setNextIndex(null);
+    setIsSliding(false);
+  };
+
+  const startSlide = (direction: 1 | -1) => {
+    if (isSliding || images.length < 2) return;
+
+    const targetIndex =
+      direction === 1
+        ? currentIndex < images.length - 1
+          ? currentIndex + 1
+          : 0
+        : currentIndex > 0
+          ? currentIndex - 1
+          : images.length - 1;
+
+    setSlideDirection(direction);
+    setNextIndex(targetIndex);
+    setIsSliding(false);
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        setIsSliding(true);
+      });
+    });
+
+    if (transitionTimerRef.current) {
+      window.clearTimeout(transitionTimerRef.current);
+    }
+    transitionTimerRef.current = window.setTimeout(() => {
+      setCurrentIndex(targetIndex);
+      setNextIndex(null);
+      setIsSliding(false);
+      transitionTimerRef.current = null;
+    }, SLIDE_DURATION_MS);
   };
 
   const handlePrevious = () => {
-    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+    startSlide(-1);
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+    startSlide(1);
   };
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    const touch = e.touches[0] ?? e.changedTouches[0];
+    if (!touch) return;
+    touchStartRef.current = {
+      x: touch.clientX,
+      y: touch.clientY,
+    };
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    const start = touchStartRef.current;
+    if (!start) return;
+
+    const touch = e.changedTouches[0];
+    if (!touch) {
+      touchStartRef.current = null;
+      return;
+    }
+    const deltaX = touch.clientX - start.x;
+    const deltaY = Math.abs(touch.clientY - start.y);
+
+    touchStartRef.current = null;
+
+    if (deltaY > MAX_VERTICAL_DELTA) return;
+    if (Math.abs(deltaX) < SWIPE_THRESHOLD) return;
+
+    if (deltaX < 0) {
+      handleNext();
+    } else {
+      handlePrevious();
+    }
+  };
+
+  const handleTouchCancel = () => {
+    touchStartRef.current = null;
+  };
+
+  const slideFrames =
+    nextIndex === null
+      ? [currentIndex]
+      : slideDirection === 1
+        ? [currentIndex, nextIndex]
+        : [nextIndex, currentIndex];
+
+  const trackTransformClass =
+    nextIndex === null
+      ? 'translate-x-0'
+      : isSliding
+        ? slideDirection === 1
+          ? '-translate-x-full'
+          : 'translate-x-0'
+        : slideDirection === 1
+          ? 'translate-x-0'
+          : '-translate-x-full';
 
   return (
     <div>
@@ -63,15 +171,49 @@ export default function Gallery({ images }: { images: string[] }) {
       {/* 이미지 모달 */}
       <Dialog
         open={!!selectedImage}
-        onOpenChange={() => setSelectedImage(null)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setSelectedImage(null);
+            setNextIndex(null);
+            setIsSliding(false);
+            if (transitionTimerRef.current) {
+              window.clearTimeout(transitionTimerRef.current);
+              transitionTimerRef.current = null;
+            }
+          }
+        }}
       >
         <DialogContent className='max-w-4xl p-0 bg-transparent border-none'>
-          <div className='relative'>
-            <img
-              src={images[currentIndex]}
-              alt={`Wedding photo ${currentIndex + 1}`}
-              className='w-full h-auto rounded-lg'
-            />
+          <div
+            className='relative touch-pan-y select-none'
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            onTouchCancel={handleTouchCancel}
+          >
+            <div className='overflow-hidden rounded-lg'>
+              <div
+                className={cn(
+                  'flex will-change-transform',
+                  nextIndex !== null && 'transition-transform ease-out',
+                  trackTransformClass,
+                )}
+                style={
+                  nextIndex !== null
+                    ? { transitionDuration: `${SLIDE_DURATION_MS}ms` }
+                    : undefined
+                }
+              >
+                {slideFrames.map((imageIndex, order) => (
+                  <img
+                    key={`${selectedImage}-${imageIndex}-${order}`}
+                    src={images[imageIndex]}
+                    alt={`Wedding photo ${imageIndex + 1}`}
+                    className='h-auto w-full shrink-0'
+                    draggable={false}
+                  />
+                ))}
+              </div>
+            </div>
             <Button
               variant='ghost'
               size='icon'
