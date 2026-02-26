@@ -63,7 +63,15 @@ export default function CommentDeleteDialog({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(nextOpen) => {
+        if (!nextOpen) {
+          setPassword('');
+          onClose();
+        }
+      }}
+    >
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>메시지 삭제</DialogTitle>
@@ -81,7 +89,14 @@ export default function CommentDeleteDialog({
             />
           </div>
           <div className='flex justify-end gap-2'>
-            <Button type='button' variant='outline' onClick={onClose}>
+            <Button
+              type='button'
+              variant='outline'
+              onClick={() => {
+                setPassword('');
+                onClose();
+              }}
+            >
               취소
             </Button>
             <Button type='submit' variant='destructive'>

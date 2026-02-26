@@ -3,6 +3,7 @@ import { GuestbookEntry } from '@/lib/types';
 import supabase from '@/supabase-client';
 import { CommentCard } from '@/components/comment-card';
 import CommentDeleteDialog from './comment-delete-dialog';
+import CommentEditDialog from './comment-edit-dialog';
 import Intersect from '@/common/components/intersect';
 import { ChevronDown } from 'lucide-react';
 import { Button } from '@/common/components/ui/button';
@@ -17,6 +18,9 @@ const LIST_SIZE = 5;
 export default function CommentList({ onMessageAdded }: ICommentListProps) {
   const [messages, setMessages] = useState<GuestbookEntry[]>([]);
   const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [editingMessage, setEditingMessage] = useState<GuestbookEntry | null>(
+    null,
+  );
   const [visibleCount, setVisibleCount] = useState(LIST_SIZE);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -60,6 +64,17 @@ export default function CommentList({ onMessageAdded }: ICommentListProps) {
           onMessageAdded?.();
         },
       )
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'guestbook' },
+        (payload) => {
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === payload.new.id ? (payload.new as GuestbookEntry) : msg,
+            ),
+          );
+        },
+      )
       .subscribe();
 
     return () => {
@@ -86,11 +101,19 @@ export default function CommentList({ onMessageAdded }: ICommentListProps) {
             <Intersect key={message.id} type='data-animate'>
               <CommentCard
                 message={message}
+                onEditClick={() => setEditingMessage(message)}
                 onDeleteClick={() => setDeleteId(message.id)}
                 data-animate-stage={(index % LIST_SIZE) + 1}
               />
             </Intersect>
           ))}
+
+          <CommentEditDialog
+            message={editingMessage}
+            isOpen={editingMessage !== null}
+            onClose={() => setEditingMessage(null)}
+            onUpdated={fetchMessages}
+          />
 
           <CommentDeleteDialog
             id={deleteId!}

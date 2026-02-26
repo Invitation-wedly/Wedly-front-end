@@ -3,7 +3,7 @@ import { parse } from "date-fns";
 export const SPLASH_TEXT = [`진배, 윤정 결혼합니다.`];
 
 // 비디오 정보 (첫 화면 비디오가 있으면 배너 이미지 보다는 비디오가 우선적으로 보여짐)
-export const VIDEO_URL = '';
+export const VIDEO_URL = '/movie.mp4';
 export const POSTER_URL = '';
 
 // 배너 이미지 (맨위 처음에 보여지는 사진)
@@ -26,8 +26,9 @@ export const WEDDING_LOCATION_SUBWAY = [
   '[3호선] 남부터미널역 4번 출구 도보 2분 이내'
 ];
 export const WEDDING_LOCATION_BUS = [
-  '○○○○ 하차: ○○○, ○○○, ○○○, ○○○, ○○○, ○○○, ○○○, ○○○',
-  '○○○○ 하차: ○○○, ○○○, ○○○',
+  '지선버스(G, 초록색) : 4319(사당-남부터미널-잠실)',
+  '간선버스(B, 파란색) : 461(장지동-남부터미널-여의도), 641(문래동-남부터미널-양재동)',
+  '직행・공항버스 : 5300-1(수원-남부터미널-강남역), 8501(수원대-남부터미널-양재꽃시장)',
 ];
 export const WEDDING_PARKING = ['맞은편 전용 주차장(주차타워) 이용.', '(주소 : 서초동 1426-5번지 or 서초구 서초중앙로2길 10)'];
 export const WEDDING_MAP_LOT = 127.0179212; // 경도
@@ -56,26 +57,26 @@ export const BRIDE_MOTHER_NAME = '박영이';
 // 연락처
 export const GROOM_CONTACT = [
   { designation: '신랑', name: GROOM_NAME, phone: '010-2191-8382' },
-  { designation: '신랑 父', name: GROOM_FATHER_NAME, phone: '010-3115-3994' },
-  { designation: '신랑 母', name: GROOM_MOTHER_NAME, phone: '010-3467-8382' },
+  { designation: '신랑 아버지', name: GROOM_FATHER_NAME, phone: '010-3115-3994' },
+  { designation: '신랑 어머니', name: GROOM_MOTHER_NAME, phone: '010-3467-8382' },
 ];
 export const BRIDE_CONTACT = [
-  { designation: '신부', name: BRIDE_NAME, phone: '○○○-○○○-○○○○' },
-  { designation: '신부 父', name: BRIDE_FATHER_NAME, phone: '○○○-○○○-○○○○' },
-  { designation: '신부 母', name: BRIDE_MOTHER_NAME, phone: '○○○-○○○-○○○○' },
+  { designation: '신부', name: BRIDE_NAME, phone: '010-2025-4505' },
+  { designation: '신부 아버지', name: BRIDE_FATHER_NAME, phone: '010-6752-4505' },
+  { designation: '신부 어머니', name: BRIDE_MOTHER_NAME, phone: '010-6757-4505' },
 ];
 
 // 계좌번호 정보
 export const GROOM_ACCOUNTS = [
-  { holder: '○○○', bank: '○○은행', number: '○○○-○○○-○○○○' },
-  { holder: '○○○', bank: '○○은행', number: '○○○-○○○-○○○○' },
-  { holder: '○○○', bank: '○○은행', number: '○○○-○○○-○○○○' },
+  { holder: '정진배', bank: '우리은행', number: '1002-395-082800' },
+  { holder: '정하용', bank: '신한은행', number: '389-12-19703-0' },
+  { holder: '강영숙', bank: '새마을금고', number: '0901-10-009213-1' },
 ];
 
 export const BRIDE_ACCOUNTS = [
-  { holder: '○○○', bank: '○○은행', number: '○○○-○○○-○○○○' },
-  { holder: '○○○', bank: '○○', number: '○○○-○○○-○○○○' },
-  { holder: '○○○', bank: '○○○뱅크', number: '○○○-○○○-○○○○' },
+  { holder: '김윤정', bank: '농협', number: '302-2025-4505-51' },
+  { holder: '김명호', bank: '우리은행', number: '217-070282-02-101' },
+  { holder: '박영이', bank: '농협', number: '211084-52-250604' },
 ];
 
 // 갤러리 이미지

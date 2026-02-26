@@ -26,13 +26,10 @@ export default function Gallery({ images }: { images: string[] }) {
 
   return (
     <div>
-      <h2 className='text-center text-xl font-en'>gallery</h2>
-      <div className='flex justify-center my-4'>
-        <img src='/ring.png' alt='반지' className='w-6 h-6 aspect-square' />
-      </div>
+      <h2 className='text-center text-xl font-en pb-10'>From This Day</h2>
 
       {/* 이미지 그리드 */}
-      <div className='grid grid-cols-3 gap-2'>
+      <div className='grid grid-cols-3 gap-2 mx-4'>
         {images.slice(0, displayCount).map((image, index) => (
           <Intersect key={index} type='data-animate'>
             <div

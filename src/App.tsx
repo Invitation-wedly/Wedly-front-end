@@ -37,7 +37,7 @@ function App() {
       <Layout>
         <BackgroundMusic hasVideo={hasVideo} />
         {/* 비디오 또는 배너 이미지 */}
-        <section className='py-20 w-full'>
+        <section className='w-full'>
           {isChecking ? (
             <LoaderLoading />
           ) : hasVideo ? (
@@ -91,18 +91,11 @@ function App() {
           </Intersect>
         </section>
         {/* 계좌번호 */}
-        <section className='my-20'>
+        <section className='my-24'>
           <Intersect>
             <div className='flex flex-col justify-center items-center'>
-              <h2 className='text-center'>마음 전하실 곳</h2>
-              <div className='flex justify-center my-4'>
-                <img
-                  src='/ring.png'
-                  alt='반지'
-                  className='w-6 h-6 aspect-square'
-                />
-              </div>
-              <div className='text-center leading-7'>
+              <h2 className='text-center text-2xl mb-5'>마음 전하실 곳</h2>
+              <div className='text-center text-base leading-8'>
                 참석이 어려우신 분들을 위해
                 <br />
                 계좌번호를 기재하였습니다.

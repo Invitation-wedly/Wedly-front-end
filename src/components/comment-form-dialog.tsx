@@ -14,6 +14,7 @@ import { Label } from '@/common/components/ui/label';
 import { Input } from '@/common/components/ui/input';
 import { Textarea } from '@/common/components/ui/textarea';
 import { Send } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface CommentFormDialogProps {
   onSuccess?: () => void;
@@ -24,6 +25,9 @@ export default function CommentFormDialog({
 }: CommentFormDialogProps) {
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [password, setPassword] = useState('');
+  const [comment, setComment] = useState('');
+  const canSubmit = Boolean(password.trim() && comment.trim()) && !isSubmitting;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -66,6 +70,8 @@ export default function CommentFormDialog({
 
       setOpen(false);
       e.currentTarget.reset();
+      setPassword('');
+      setComment('');
       onSuccess?.();
     } catch (error) {
       console.error('Error:', error);
@@ -75,7 +81,16 @@ export default function CommentFormDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        setOpen(nextOpen);
+        if (!nextOpen) {
+          setPassword('');
+          setComment('');
+        }
+      }}
+    >
       <DialogTrigger asChild>
         <Button variant='outline' className='rounded-full'>
           <Send className='w-4 h-4 mr-2' />
@@ -102,6 +117,8 @@ export default function CommentFormDialog({
               name='password'
               type='password'
               placeholder='삭제시 필요합니다'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className='space-y-2'>
@@ -113,9 +130,20 @@ export default function CommentFormDialog({
               name='comment'
               placeholder='축하 메시지를 작성해주세요.'
               className='min-h-[100px]'
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
             />
           </div>
-          <Button type='submit' className='w-full'>
+          <Button
+            type='submit'
+            disabled={!canSubmit}
+            className={cn(
+              'w-full disabled:opacity-100',
+              canSubmit
+                ? 'bg-gray-900 text-white hover:bg-gray-800'
+                : 'bg-gray-200 text-gray-400 hover:bg-gray-200',
+            )}
+          >
             메시지 등록하기
           </Button>
         </form>

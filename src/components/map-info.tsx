@@ -16,7 +16,7 @@ import {
   WEDDING_MAP_LOT,
   WEDDING_PARKING,
 } from '../../config';
-import { Map, MoveUpRight } from 'lucide-react';
+import { Map } from 'lucide-react';
 
 export default function MapInfo() {
   const navigationApps = [
@@ -56,28 +56,6 @@ export default function MapInfo() {
           <DropdownMenuContent>
             <DropdownMenuItem onSelect={() => copy(WEDDING_ADDRESS)}>
               주소복사하기
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onSelect={() => {
-                window.open(
-                  `https://map.naver.com/p/search/${WEDDING_ADDRESS}`,
-                  '_blank',
-                );
-              }}
-              className='flex justify-between'
-            >
-              네이버 지도 <MoveUpRight className='w-4 h-4' />
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onSelect={() => {
-                window.open(
-                  `https://map.kakao.com/?q=${WEDDING_ADDRESS}`,
-                  '_blank',
-                );
-              }}
-              className='flex justify-between'
-            >
-              카카오 지도 <MoveUpRight className='w-4 h-4' />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -143,6 +121,6 @@ export default function MapInfo() {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
