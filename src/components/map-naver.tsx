@@ -41,6 +41,7 @@ export default function MapNaver() {
         mapInstance = new naverMaps.Map(mapRef.current, {
           center: position,
           zoom: 15,
+          draggable: false,
           zoomControl: false,
           scrollWheel: false,
           pinchZoom: false,
@@ -97,7 +98,7 @@ export default function MapNaver() {
 
   return (
     <div className='w-full'>
-      <div ref={mapRef} className='w-full h-[400px] shadow-md' />
+      <div ref={mapRef} className='w-full h-[400px] touch-none shadow-md' />
     </div>
   );
 }
