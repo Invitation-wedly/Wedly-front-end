@@ -9,13 +9,38 @@ import { copy } from '@/lib/copy';
 import {
   WEDDING_ADDRESS,
   WEDDING_LOCATION_BUS,
+  WEDDING_LOCATION,
   WEDDING_LOCATION_NAME,
   WEDDING_LOCATION_SUBWAY,
+  WEDDING_MAP_LAT,
+  WEDDING_MAP_LOT,
   WEDDING_PARKING,
 } from '../../config';
 import { Map, MoveUpRight } from 'lucide-react';
 
 export default function MapInfo() {
+  const navigationApps = [
+    {
+      label: '네이버지도',
+      icon: '/ico_nav03.png',
+      href: `https://map.naver.com/p/search/${encodeURIComponent(WEDDING_ADDRESS)}`,
+    },
+    {
+      label: '티맵',
+      icon: '/ico_nav02.png',
+      href: `https://www.tmap.co.kr/tmap2/mobile/route.jsp?name=${encodeURIComponent(
+        `${WEDDING_LOCATION_NAME} ${WEDDING_LOCATION}`,
+      )}&lon=${WEDDING_MAP_LOT}&lat=${WEDDING_MAP_LAT}`,
+    },
+    {
+      label: '카카오내비',
+      icon: '/ico_nav01.png',
+      href: `https://map.kakao.com/link/to/${encodeURIComponent(
+        WEDDING_LOCATION_NAME,
+      )},${WEDDING_MAP_LAT},${WEDDING_MAP_LOT}`,
+    },
+  ];
+
   return (
     <div className='mt-10 mx-8'>
       <div className='flex justify-between items-center'>
@@ -91,6 +116,30 @@ export default function MapInfo() {
                 드립니다.
               </span>
             </div>
+          </div>
+        </div>
+
+        <div className='rounded-xl border border-gray-200 bg-gray-100 px-4 py-5'>
+          <h3 className='text-sm font-semibold text-foreground'>네비게이션</h3>
+          <p className='mt-2 text-xs text-gray-500'>
+            원하시는 앱을 선택하시면 길안내가 시작됩니다.
+          </p>
+          <div className='mt-4 grid grid-cols-3 gap-2'>
+            {navigationApps.map((app) => (
+              <button
+                key={app.label}
+                type='button'
+                onClick={() => window.open(app.href, '_blank')}
+                className='flex h-10 items-center justify-center gap-1.5 rounded-lg border border-gray-200 bg-white px-2 text-xs font-medium text-gray-700'
+              >
+                <img
+                  src={app.icon}
+                  alt={app.label}
+                  className='h-4 w-4 object-contain'
+                />
+                <span>{app.label}</span>
+              </button>
+            ))}
           </div>
         </div>
       </div>

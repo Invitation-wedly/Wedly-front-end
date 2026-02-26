@@ -1,5 +1,5 @@
 import { copy } from '@/lib/copy';
-import { URL } from '@/lib/utils';
+import { URL as SITE_URL } from '@/lib/utils';
 import { useState } from 'react';
 import { Share2, Link } from 'lucide-react';
 import {
@@ -8,12 +8,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/common/components/ui/dropdown-menu';
+import {
+  BANNERIMAGE,
+  BRIDE_NAME,
+  GROOM_NAME,
+  WEDDING_DATE,
+  WEDDING_LOCATION,
+  WEDDING_LOCATION_NAME,
+  WEDDING_TIME,
+} from '../../config';
 
 export default function Share() {
   const [open, setOpen] = useState(false);
 
   const onCopy = () => {
-    copy(URL);
+    copy(SITE_URL);
     setOpen(false);
   };
 
@@ -26,19 +35,19 @@ export default function Share() {
       objectType: 'feed',
       content: {
         ...image,
-        title: '○○○ ♥ ○○○ 결혼합니다',
-        description: '○○월 ○○일 ○ ○○시 ○○분\n○○, ○○○○○○',
+        title: `${GROOM_NAME} ❤ ${BRIDE_NAME} 결혼합니다`,
+        description: `${WEDDING_DATE} ${WEDDING_TIME}\n${WEDDING_LOCATION} ${WEDDING_LOCATION_NAME}`,
         link: {
-          mobileWebUrl: URL,
-          webUrl: URL,
+          mobileWebUrl: SITE_URL,
+          webUrl: SITE_URL,
         },
       },
       buttons: [
         {
           title: '모바일 청첩장 보기',
           link: {
-            mobileWebUrl: URL,
-            webUrl: URL,
+            mobileWebUrl: SITE_URL,
+            webUrl: SITE_URL,
           },
         },
       ],
@@ -46,9 +55,12 @@ export default function Share() {
   };
 
   const kakaoShareFeed = () => {
+    const imageUrl = BANNERIMAGE.startsWith('http')
+      ? BANNERIMAGE
+      : `${SITE_URL.replace(/\/$/, '')}${BANNERIMAGE}`;
+
     kakaoSend({
-      imageUrl:
-        'https://imagedelivery.net/9PYUDgg_yiUa2u-j77sFBg/d5b8c0a2-13c7-4e81-70ee-20f263346200/tog',
+      imageUrl,
       imageWidth: 600,
       imageHeight: 450,
     });
