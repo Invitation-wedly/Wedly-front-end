@@ -92,9 +92,12 @@ export default function CommentFormDialog({
       }}
     >
       <DialogTrigger asChild>
-        <Button variant='outline' className='rounded-full'>
+        <Button
+          variant='outline'
+          className='h-11 rounded-full border-emerald-300 bg-white px-5 text-emerald-700 shadow-sm transition-colors hover:bg-emerald-50 hover:text-emerald-800'
+        >
           <Send className='w-4 h-4 mr-2' />
-          보내기
+          메시지 남기기
         </Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>

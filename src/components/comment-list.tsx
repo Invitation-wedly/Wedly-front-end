@@ -83,17 +83,15 @@ export default function CommentList({ onMessageAdded }: ICommentListProps) {
   }, [onMessageAdded]);
 
   return (
-    <div className='space-y-4 px-8'>
+    <div className='space-y-3'>
       {isLoading ? (
-        <LoaderLoading />
+        <div className='rounded-2xl border border-white/80 bg-white/70 py-8'>
+          <LoaderLoading />
+        </div>
       ) : messages.length === 0 ? (
-        <div className='flex flex-col items-center justify-center py-10 space-y-2'>
-          <p className='text-sm text-muted-foreground dark:text-foreground'>
-            아직 메시지가 없습니다.
-          </p>
-          <p className='text-sm text-muted-foreground dark:text-foreground'>
-            첫 번째 메시지를 남겨보세요!
-          </p>
+        <div className='flex flex-col items-center justify-center space-y-2 rounded-2xl border border-dashed border-emerald-300/80 bg-white/70 py-10'>
+          <p className='text-sm text-emerald-700'>아직 메시지가 없습니다.</p>
+          <p className='text-sm text-slate-600'>첫 번째 메시지를 남겨보세요!</p>
         </div>
       ) : (
         <>
@@ -123,12 +121,12 @@ export default function CommentList({ onMessageAdded }: ICommentListProps) {
           />
 
           {visibleCount < messages.length && (
-            <div className='flex justify-center pt-4'>
+            <div className='flex justify-center pt-2'>
               <Button
                 variant='ghost'
                 size='sm'
                 onClick={handleLoadMore}
-                className='flex items-center gap-2'
+                className='h-9 rounded-full border border-emerald-200 bg-white/80 px-4 text-emerald-700 hover:bg-emerald-50'
               >
                 더보기
                 <ChevronDown className='w-4 h-4' />
