@@ -134,18 +134,6 @@ function App() {
           <div className='flex items-center justify-center'>
             <Share />
           </div>
-          <p className='mt-20 text-xs px-8'>
-            © 2025{' '}
-            <a
-              href='https://www.hyun-seok.com/'
-              target='_blank'
-              className='font-bold'
-              rel='noreferrer'
-            >
-              ssseok
-            </a>
-            . All rights reserved.
-          </p>
         </footer>
       </Layout>
     </>
