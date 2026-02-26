@@ -34,7 +34,7 @@ function App() {
     <>
       <SplashScreen />
       <Layout>
-        <BackgroundMusic hasVideo={hasVideo} />
+        <BackgroundMusic />
         {/* 비디오 또는 배너 이미지 */}
         <section className='w-full'>
           {hasVideo ? (
