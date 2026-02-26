@@ -15,8 +15,6 @@ import CommentList from '@/components/comment-list';
 import Share from '@/components/share';
 import BannerImage from '@/components/banner-image';
 import BackgroundMusic from '@/components/background-music';
-import LoaderLoading from '@/common/components/loader-loading';
-import { useVideoCheck } from '@/hooks/use-video-check';
 import { useState } from 'react';
 import {
   BRIDE_ACCOUNTS,
@@ -28,8 +26,9 @@ import {
 } from '../config';
 
 function App() {
-  const { hasVideo, isChecking } = useVideoCheck(VIDEO_URL);
+  const [hasVideoError, setHasVideoError] = useState(false);
   const [, setMessageAdded] = useState(false);
+  const hasVideo = Boolean(VIDEO_URL) && !hasVideoError;
 
   return (
     <>
@@ -38,10 +37,12 @@ function App() {
         <BackgroundMusic hasVideo={hasVideo} />
         {/* 비디오 또는 배너 이미지 */}
         <section className='w-full'>
-          {isChecking ? (
-            <LoaderLoading />
-          ) : hasVideo ? (
-            <VideoPlayer videoUrl={VIDEO_URL} posterUrl={POSTER_URL} />
+          {hasVideo ? (
+            <VideoPlayer
+              videoUrl={VIDEO_URL}
+              posterUrl={POSTER_URL}
+              onVideoError={() => setHasVideoError(true)}
+            />
           ) : (
             <Intersect>
               <BannerImage />
