@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 const SLICE_SIZE = 9;
 const SWIPE_THRESHOLD = 40;
 const MAX_VERTICAL_DELTA = 80;
-const SLIDE_DURATION_MS = 300;
+const SLIDE_DURATION_MS = 400;
 
 type GalleryImageItem = {
   src: string;
