@@ -80,25 +80,13 @@ export const BRIDE_ACCOUNTS = [
 ];
 
 // 갤러리 이미지
-export const GALLERY_IMAGES = [
-  '/image/gallery-1.jpeg',
-  '/image/gallery-2.jpeg',
-  '/image/gallery-3.jpeg',
-  '/image/gallery-4.jpeg',
-  '/image/gallery-5.jpeg',
-  '/image/gallery-6.jpeg',
-  '/image/gallery-7.jpeg',
-  '/image/gallery-8.jpeg',
-  '/image/gallery-9.jpeg',
-  '/image/gallery-10.jpeg',
-  '/image/gallery-11.jpeg',
-  '/image/gallery-12.jpeg',
-  '/image/gallery-13.jpeg',
-  '/image/gallery-14.jpeg',
-  '/image/gallery-15.jpeg',
-  '/image/gallery-16.jpeg',
-  '/image/gallery-17.jpeg',
-  '/image/gallery-18.jpeg',
-  '/image/gallery-19.jpeg',
-  '/image/gallery-20.jpeg',
-];
+const GALLERY_IMAGE_FILES = Array.from(
+  { length: 20 },
+  (_, index) => `gallery-${index + 1}.jpeg`,
+);
+
+export const GALLERY_IMAGES = GALLERY_IMAGE_FILES.map((file) => ({
+  src: `/image/${file}`,
+  thumbnail: `/image/thumb/${file}`,
+  alt: `Wedding photo ${file.replace('.jpeg', '').replace('gallery-', '')}`,
+}));

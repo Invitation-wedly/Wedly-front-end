@@ -10,9 +10,15 @@ const SWIPE_THRESHOLD = 40;
 const MAX_VERTICAL_DELTA = 80;
 const SLIDE_DURATION_MS = 300;
 
-export default function Gallery({ images }: { images: string[] }) {
+type GalleryImageItem = {
+  src: string;
+  thumbnail?: string;
+  alt?: string;
+};
+
+export default function Gallery({ images }: { images: GalleryImageItem[] }) {
   const [displayCount, setDisplayCount] = useState<number>(SLICE_SIZE);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [nextIndex, setNextIndex] = useState<number | null>(null);
   const [slideDirection, setSlideDirection] = useState<1 | -1>(1);
@@ -29,8 +35,8 @@ export default function Gallery({ images }: { images: string[] }) {
     };
   }, []);
 
-  const handleImageClick = (image: string, index: number) => {
-    setSelectedImage(image);
+  const handleImageClick = (index: number) => {
+    setSelectedIndex(index);
     setCurrentIndex(index);
     setNextIndex(null);
     setIsSliding(false);
@@ -142,13 +148,15 @@ export default function Gallery({ images }: { images: string[] }) {
           <Intersect key={index} type='data-animate'>
             <div
               className='aspect-square cursor-pointer overflow-hidden rounded-lg'
-              onClick={() => handleImageClick(image, index)}
+              onClick={() => handleImageClick(index)}
               data-animate-stage={(index % SLICE_SIZE) + 1}
             >
               <img
-                src={image}
-                alt={`Wedding photo ${index + 1}`}
-                className='w-full h-full object-cover hover:scale-105 transition-transform duration-300'
+                src={image.thumbnail || image.src}
+                alt={image.alt || `Wedding photo ${index + 1}`}
+                loading={index < 3 ? 'eager' : 'lazy'}
+                decoding='async'
+                className='w-full h-full object-cover hover:scale-105 transition-transform duration-400'
               />
             </div>
           </Intersect>
@@ -170,10 +178,10 @@ export default function Gallery({ images }: { images: string[] }) {
 
       {/* 이미지 모달 */}
       <Dialog
-        open={!!selectedImage}
+        open={selectedIndex !== null}
         onOpenChange={(open) => {
           if (!open) {
-            setSelectedImage(null);
+            setSelectedIndex(null);
             setNextIndex(null);
             setIsSliding(false);
             if (transitionTimerRef.current) {
@@ -205,9 +213,11 @@ export default function Gallery({ images }: { images: string[] }) {
               >
                 {slideFrames.map((imageIndex, order) => (
                   <img
-                    key={`${selectedImage}-${imageIndex}-${order}`}
-                    src={images[imageIndex]}
-                    alt={`Wedding photo ${imageIndex + 1}`}
+                    key={`${selectedIndex}-${imageIndex}-${order}`}
+                    src={images[imageIndex].src}
+                    alt={images[imageIndex].alt || `Wedding photo ${imageIndex + 1}`}
+                    loading='eager'
+                    decoding='async'
                     className='h-auto w-full shrink-0'
                     draggable={false}
                   />
