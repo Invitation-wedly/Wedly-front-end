@@ -22,9 +22,12 @@ export default function MapNaver() {
       center: position,
       zoom: 15,
       zoomControl: false,
-      zoomControlOptions: {
-        position: window.naver.maps.Position.TOP_RIGHT,
-      },
+      scrollWheel: false,
+      pinchZoom: false,
+      disableDoubleClickZoom: true,
+      disableDoubleTapZoom: true,
+      disableTwoFingerTapZoom: true,
+      keyboardShortcuts: false,
     });
 
     // 마커 생성 (기본 디자인)
@@ -44,10 +47,8 @@ export default function MapNaver() {
       borderColor: 'transparent',
     });
 
-    // 마커 클릭 시 정보창 표시
-    window.naver.maps.Event.addListener(marker, 'click', () => {
-      infoWindow.open(map, marker);
-    });
+    // 정보창 항상 열림
+    infoWindow.open(map, marker);
 
     return () => {
       map.destroy();
