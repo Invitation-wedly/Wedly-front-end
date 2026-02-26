@@ -18,8 +18,23 @@ export default function MapNaver() {
     let isCancelled = false;
     let mapInstance: any = null;
     let retryCount = 0;
+    let retryTimer: number | null = null;
     const MAX_RETRY = 40;
     const RETRY_INTERVAL_MS = 150;
+
+    const setMapAvailability = (isAvailable: boolean) => {
+      if (isCancelled) return;
+      setIsMapAvailable(isAvailable);
+    };
+
+    const previousAuthFailureHandler = window.navermap_authFailure;
+    window.navermap_authFailure = () => {
+      if (typeof previousAuthFailureHandler === 'function') {
+        previousAuthFailureHandler();
+      }
+      console.error('[MapNaver] 네이버 지도 Open API 인증 실패');
+      setMapAvailability(false);
+    };
 
     const initializeMap = () => {
       if (isCancelled || !mapRef.current) return;
@@ -28,10 +43,10 @@ export default function MapNaver() {
       if (!naverMaps) {
         retryCount += 1;
         if (retryCount > MAX_RETRY) {
-          setIsMapAvailable(false);
+          setMapAvailability(false);
           return;
         }
-        window.setTimeout(initializeMap, RETRY_INTERVAL_MS);
+        retryTimer = window.setTimeout(initializeMap, RETRY_INTERVAL_MS);
         return;
       }
 
@@ -67,10 +82,10 @@ export default function MapNaver() {
         });
 
         infoWindow.open(mapInstance, marker);
-        setIsMapAvailable(true);
+        setMapAvailability(true);
       } catch (error) {
         console.error('[MapNaver] 지도 초기화 실패:', error);
-        setIsMapAvailable(false);
+        setMapAvailability(false);
       }
     };
 
@@ -78,8 +93,16 @@ export default function MapNaver() {
 
     return () => {
       isCancelled = true;
+      if (retryTimer !== null) {
+        window.clearTimeout(retryTimer);
+      }
       if (mapInstance?.destroy) {
         mapInstance.destroy();
+      }
+      if (typeof previousAuthFailureHandler === 'function') {
+        window.navermap_authFailure = previousAuthFailureHandler;
+      } else {
+        delete window.navermap_authFailure;
       }
     };
   }, [latitude, longitude]);
