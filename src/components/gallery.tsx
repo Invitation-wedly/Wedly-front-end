@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import { Dialog, DialogContent } from '@/common/components/ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+} from '@/common/components/ui/dialog';
 import { Button } from '@/common/components/ui/button';
-import { ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, X } from 'lucide-react';
 import Intersect from '@/common/components/intersect';
-import { cn } from '@/lib/utils';
 
 const SLICE_SIZE = 9;
 const SWIPE_THRESHOLD = 40;
 const MAX_VERTICAL_DELTA = 80;
-const SLIDE_DURATION_MS = 400;
+const SLIDE_DURATION_MS = 300;
 
 type GalleryImageItem = {
   src: string;
@@ -30,6 +33,13 @@ export default function Gallery({ images }: { images: GalleryImageItem[] }) {
   const getModalSrc = (index: number) =>
     images[index]?.display || images[index]?.src;
 
+  const preloadImage = (src?: string) => {
+    if (!src) return;
+    const img = new Image();
+    img.decoding = 'async';
+    img.src = src;
+  };
+
   useEffect(() => {
     return () => {
       if (transitionTimerRef.current) {
@@ -50,12 +60,19 @@ export default function Gallery({ images }: { images: GalleryImageItem[] }) {
 
     preloadTargets.forEach((index) => {
       const src = getModalSrc(index);
-      if (!src) return;
-      const img = new Image();
-      img.decoding = 'async';
-      img.src = src;
+      preloadImage(src);
     });
   }, [selectedIndex, currentIndex, images]);
+
+  useEffect(() => {
+    const initialSources = images
+      .slice(0, SLICE_SIZE)
+      .map((image) => image.thumbnail || image.display || image.src);
+
+    initialSources.forEach(preloadImage);
+    preloadImage(getModalSrc(0));
+    preloadImage(getModalSrc(1));
+  }, [images]);
 
   const handleImageClick = (index: number) => {
     setSelectedIndex(index);
@@ -149,16 +166,16 @@ export default function Gallery({ images }: { images: GalleryImageItem[] }) {
         ? [currentIndex, nextIndex]
         : [nextIndex, currentIndex];
 
-  const trackTransformClass =
+  const trackTransform =
     nextIndex === null
-      ? 'translate-x-0'
+      ? 'translateX(0%)'
       : isSliding
         ? slideDirection === 1
-          ? '-translate-x-full'
-          : 'translate-x-0'
+          ? 'translateX(-50%)'
+          : 'translateX(0%)'
         : slideDirection === 1
-          ? 'translate-x-0'
-          : '-translate-x-full';
+          ? 'translateX(0%)'
+          : 'translateX(-50%)';
 
   return (
     <div>
@@ -213,24 +230,44 @@ export default function Gallery({ images }: { images: GalleryImageItem[] }) {
           }
         }}
       >
-        <DialogContent className='max-w-4xl p-0 bg-transparent border-none'>
+        <DialogContent
+          showCloseButton={false}
+          className='max-w-4xl p-0 bg-transparent border-none'
+        >
           <div
             className='relative touch-pan-y select-none'
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
             onTouchCancel={handleTouchCancel}
           >
+            <DialogClose
+              className='absolute right-3 top-3 z-30 inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/55 text-white shadow-md ring-1 ring-white/35 backdrop-blur-sm transition-colors hover:bg-black/70'
+              aria-label='닫기'
+            >
+              <X className='h-4 w-4' />
+            </DialogClose>
             <div className='overflow-hidden rounded-lg'>
               <div
-                className={cn(
-                  'flex will-change-transform',
-                  nextIndex !== null && 'transition-transform ease-out',
-                  trackTransformClass,
-                )}
+                className='flex will-change-transform'
                 style={
                   nextIndex !== null
-                    ? { transitionDuration: `${SLIDE_DURATION_MS}ms` }
-                    : undefined
+                    ? {
+                        width: '200%',
+                        transform: trackTransform,
+                        transitionProperty: isSliding
+                          ? 'transform'
+                          : undefined,
+                        transitionDuration: isSliding
+                          ? `${SLIDE_DURATION_MS}ms`
+                          : undefined,
+                        transitionTimingFunction: isSliding
+                          ? 'ease-in-out'
+                          : undefined,
+                      }
+                    : {
+                        width: '100%',
+                        transform: 'translateX(0%)',
+                      }
                 }
               >
                 {slideFrames.map((imageIndex, order) => (
@@ -240,7 +277,11 @@ export default function Gallery({ images }: { images: GalleryImageItem[] }) {
                     alt={images[imageIndex].alt || `Wedding photo ${imageIndex + 1}`}
                     loading='eager'
                     decoding='async'
-                    className='h-auto w-full shrink-0'
+                    className={
+                      nextIndex !== null
+                        ? 'h-auto w-1/2 shrink-0'
+                        : 'h-auto w-full shrink-0'
+                    }
                     draggable={false}
                   />
                 ))}
