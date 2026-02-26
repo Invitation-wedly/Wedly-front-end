@@ -19,17 +19,6 @@ export default function BackgroundMusic() {
       await audio.play();
       setIsPlaying(true);
     } catch (error) {
-      if (withSound) {
-        try {
-          audio.muted = true;
-          setIsMuted(true);
-          await audio.play();
-          setIsPlaying(true);
-          return;
-        } catch (retryError) {
-          console.error('음소거 재생도 실패:', retryError);
-        }
-      }
       console.error('오디오 재생 실패:', error);
       setIsPlaying(false);
     }
@@ -43,6 +32,8 @@ export default function BackgroundMusic() {
       'scroll',
       'wheel',
       'touchmove',
+      'touchstart',
+      'pointerdown',
     ];
 
     const handleFirstInteraction = () => {
