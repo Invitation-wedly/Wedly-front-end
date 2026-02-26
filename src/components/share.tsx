@@ -2,6 +2,7 @@ import { copy } from '@/lib/copy';
 import { URL as SITE_URL } from '@/lib/utils';
 import { useState } from 'react';
 import { Share2, Link } from 'lucide-react';
+import toast from 'react-hot-toast';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,8 +19,17 @@ import {
   WEDDING_TIME,
 } from '../../config';
 
+const DEFAULT_SHARE_URL = 'https://wedding-invitation-two-alpha.vercel.app/';
+
+function normalizeShareUrl(value: string): string {
+  return value.endsWith('/') ? value : `${value}/`;
+}
+
 export default function Share() {
   const [open, setOpen] = useState(false);
+  const kakaoShareUrl = normalizeShareUrl(
+    import.meta.env.VITE_PUBLIC_SITE_URL || DEFAULT_SHARE_URL,
+  );
 
   const onCopy = () => {
     copy(SITE_URL);
@@ -31,33 +41,56 @@ export default function Share() {
     imageWidth: number;
     imageHeight: number;
   }) => {
-    window.Kakao.Share.sendDefault({
-      objectType: 'feed',
-      content: {
-        ...image,
-        title: `${GROOM_NAME} ❤ ${BRIDE_NAME} 결혼합니다`,
-        description: `${WEDDING_DATE} ${WEDDING_TIME}\n${WEDDING_LOCATION} ${WEDDING_LOCATION_NAME}`,
-        link: {
-          mobileWebUrl: SITE_URL,
-          webUrl: SITE_URL,
-        },
-      },
-      buttons: [
-        {
-          title: '모바일 청첩장 보기',
+    const kakaoApiKey = String(import.meta.env.VITE_KAKAO_API_KEY || '').trim();
+
+    if (!window.Kakao || !window.Kakao.Share) {
+      toast.error('카카오 SDK 로드에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      return;
+    }
+
+    if (!kakaoApiKey) {
+      toast.error('카카오 API 키가 설정되지 않았습니다.');
+      return;
+    }
+
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(kakaoApiKey);
+    }
+
+    try {
+      window.Kakao.Share.sendDefault({
+        objectType: 'feed',
+        content: {
+          ...image,
+          title: `${GROOM_NAME} ❤ ${BRIDE_NAME} 결혼합니다`,
+          description: `${WEDDING_DATE} ${WEDDING_TIME}\n${WEDDING_LOCATION} ${WEDDING_LOCATION_NAME}`,
           link: {
-            mobileWebUrl: SITE_URL,
-            webUrl: SITE_URL,
+            mobileWebUrl: kakaoShareUrl,
+            webUrl: kakaoShareUrl,
           },
         },
-      ],
-    });
+        buttons: [
+          {
+            title: '모바일 청첩장 보기',
+            link: {
+              mobileWebUrl: kakaoShareUrl,
+              webUrl: kakaoShareUrl,
+            },
+          },
+        ],
+      });
+    } catch (error) {
+      console.error('[Kakao Share Error]', error);
+      toast.error(
+        '카카오 공유 실패: Kakao Developers의 Web 도메인 등록을 확인해주세요.',
+      );
+    }
   };
 
   const kakaoShareFeed = () => {
     const imageUrl = BANNERIMAGE.startsWith('http')
       ? BANNERIMAGE
-      : `${SITE_URL.replace(/\/$/, '')}${BANNERIMAGE}`;
+      : `${kakaoShareUrl.replace(/\/$/, '')}${BANNERIMAGE}`;
 
     kakaoSend({
       imageUrl,
