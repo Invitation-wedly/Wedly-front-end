@@ -3,10 +3,11 @@ import {
   WEDDING_MAP_LAT,
   WEDDING_MAP_LOT,
 } from '../../config';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function MapNaver() {
   const mapRef = useRef<HTMLDivElement>(null);
+  const [isMapAvailable, setIsMapAvailable] = useState(true);
 
   const longitude = WEDDING_MAP_LOT;
   const latitude = WEDDING_MAP_LAT;
@@ -14,46 +15,85 @@ export default function MapNaver() {
   useEffect(() => {
     if (!mapRef.current) return;
 
-    // Naver LatLng(lat, lng): 위도, 경도 순서
-    const position = new window.naver.maps.LatLng(latitude, longitude);
+    let isCancelled = false;
+    let mapInstance: any = null;
+    let retryCount = 0;
+    const MAX_RETRY = 40;
+    const RETRY_INTERVAL_MS = 150;
 
-    // 지도 생성
-    const map = new window.naver.maps.Map(mapRef.current, {
-      center: position,
-      zoom: 15,
-      zoomControl: false,
-      scrollWheel: false,
-      pinchZoom: false,
-      disableDoubleClickZoom: true,
-      disableDoubleTapZoom: true,
-      disableTwoFingerTapZoom: true,
-      keyboardShortcuts: false,
-    });
+    const initializeMap = () => {
+      if (isCancelled || !mapRef.current) return;
 
-    // 마커 생성 (기본 디자인)
-    const marker = new window.naver.maps.Marker({
-      position: position,
-      map: map,
-    });
+      const naverMaps = window.naver?.maps;
+      if (!naverMaps) {
+        retryCount += 1;
+        if (retryCount > MAX_RETRY) {
+          setIsMapAvailable(false);
+          return;
+        }
+        window.setTimeout(initializeMap, RETRY_INTERVAL_MS);
+        return;
+      }
 
-    // 정보창 생성
-    const infoWindow = new window.naver.maps.InfoWindow({
-      content: `
-        <div class="p-4 bg-white  shadow-lg text-center">
-          <h3 class="font-bold text-lg">결혼식장</h3>
-          <p class="text-gray-600">${WEDDING_ADDRESS}</p>
-        </div>
-      `,
-      borderColor: 'transparent',
-    });
+      try {
+        const position = new naverMaps.LatLng(latitude, longitude);
 
-    // 정보창 항상 열림
-    infoWindow.open(map, marker);
+        mapInstance = new naverMaps.Map(mapRef.current, {
+          center: position,
+          zoom: 15,
+          zoomControl: false,
+          scrollWheel: false,
+          pinchZoom: false,
+          disableDoubleClickZoom: true,
+          disableDoubleTapZoom: true,
+          disableTwoFingerTapZoom: true,
+          keyboardShortcuts: false,
+        });
+
+        const marker = new naverMaps.Marker({
+          position,
+          map: mapInstance,
+        });
+
+        const infoWindow = new naverMaps.InfoWindow({
+          content: `
+            <div class="p-4 bg-white shadow-lg text-center">
+              <h3 class="font-bold text-lg">결혼식장</h3>
+              <p class="text-gray-600">${WEDDING_ADDRESS}</p>
+            </div>
+          `,
+          borderColor: 'transparent',
+        });
+
+        infoWindow.open(mapInstance, marker);
+        setIsMapAvailable(true);
+      } catch (error) {
+        console.error('[MapNaver] 지도 초기화 실패:', error);
+        setIsMapAvailable(false);
+      }
+    };
+
+    initializeMap();
 
     return () => {
-      map.destroy();
+      isCancelled = true;
+      if (mapInstance?.destroy) {
+        mapInstance.destroy();
+      }
     };
-  }, []);
+  }, [latitude, longitude]);
+
+  if (!isMapAvailable) {
+    return (
+      <div className='w-full'>
+        <div className='flex h-[400px] items-center justify-center bg-gray-100 px-6 text-center text-sm text-gray-600 shadow-md'>
+          지도 로딩에 실패했습니다.
+          <br />
+          아래 네비게이션 버튼을 이용해 주세요.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='w-full'>
