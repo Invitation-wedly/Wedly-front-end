@@ -36,23 +36,13 @@ export default function BackgroundMusic() {
   }, []);
 
   useEffect(() => {
-    if (hasUserInteraction) {
-      void startPlayback(true);
-    } else {
-      void startPlayback(false);
-    }
-  }, [hasUserInteraction, startPlayback]);
-
-  useEffect(() => {
     if (hasUserInteraction) return;
 
     let handled = false;
     const interactionEvents: Array<keyof WindowEventMap> = [
-      'pointerdown',
-      'touchstart',
-      'keydown',
-      'wheel',
       'scroll',
+      'wheel',
+      'touchmove',
     ];
 
     const handleFirstInteraction = () => {
