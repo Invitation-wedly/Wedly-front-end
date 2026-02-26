@@ -58,7 +58,7 @@ export default function MapNaver() {
         const infoWindow = new naverMaps.InfoWindow({
           content: `
             <div class="p-4 bg-white shadow-lg text-center">
-              <h3 class="font-bold text-lg">결혼식장</h3>
+              <h3 class="font-bold text-lg">더 화이트베일</h3>
               <p class="text-gray-600">${WEDDING_ADDRESS}</p>
             </div>
           `,

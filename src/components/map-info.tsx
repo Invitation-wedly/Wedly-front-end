@@ -47,7 +47,7 @@ export default function MapInfo() {
         <p>
           {WEDDING_ADDRESS}
           <br />
-          <strong>{WEDDING_LOCATION_NAME}</strong>
+          <strong>{WEDDING_LOCATION} / {WEDDING_LOCATION_NAME}</strong>
         </p>
         <DropdownMenu>
           <DropdownMenuTrigger>
