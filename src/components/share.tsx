@@ -23,9 +23,18 @@ const DEFAULT_SHARE_URL = 'https://wedding-invitation-two-alpha.vercel.app/';
 const KAKAO_SDK_URL = 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js';
 const KAKAO_SDK_INTEGRITY =
   'sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Hs90nka';
+const SHARE_IMAGE_VERSION = String(
+  import.meta.env.VITE_SHARE_IMAGE_VERSION || '20260226-1',
+).trim();
 
 function normalizeShareUrl(value: string): string {
   return value.endsWith('/') ? value : `${value}/`;
+}
+
+function appendCacheBuster(url: string, version: string): string {
+  if (!version) return url;
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}v=${encodeURIComponent(version)}`;
 }
 
 async function ensureKakaoSdkLoaded(): Promise<void> {
@@ -128,9 +137,10 @@ export default function Share() {
   };
 
   const kakaoShareFeed = async () => {
-    const imageUrl = BANNERIMAGE.startsWith('http')
+    const rawImageUrl = BANNERIMAGE.startsWith('http')
       ? BANNERIMAGE
       : `${kakaoShareUrl.replace(/\/$/, '')}${BANNERIMAGE}`;
+    const imageUrl = appendCacheBuster(rawImageUrl, SHARE_IMAGE_VERSION);
 
     await kakaoSend({
       imageUrl,
