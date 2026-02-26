@@ -20,9 +20,48 @@ import {
 } from '../../config';
 
 const DEFAULT_SHARE_URL = 'https://wedding-invitation-two-alpha.vercel.app/';
+const KAKAO_SDK_URL = 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js';
+const KAKAO_SDK_INTEGRITY =
+  'sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Hs90nka';
 
 function normalizeShareUrl(value: string): string {
   return value.endsWith('/') ? value : `${value}/`;
+}
+
+async function ensureKakaoSdkLoaded(): Promise<void> {
+  if (window.Kakao?.Share) return;
+
+  const existingScript = document.querySelector<HTMLScriptElement>(
+    'script[src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"]',
+  );
+
+  if (existingScript) {
+    await new Promise<void>((resolve, reject) => {
+      if (window.Kakao?.Share) {
+        resolve();
+        return;
+      }
+
+      existingScript.addEventListener('load', () => resolve(), { once: true });
+      existingScript.addEventListener(
+        'error',
+        () => reject(new Error('Kakao SDK script failed to load')),
+        { once: true },
+      );
+    });
+    return;
+  }
+
+  await new Promise<void>((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = KAKAO_SDK_URL;
+    script.defer = true;
+    script.crossOrigin = 'anonymous';
+    script.integrity = KAKAO_SDK_INTEGRITY;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error('Kakao SDK script failed to load'));
+    document.head.appendChild(script);
+  });
 }
 
 export default function Share() {
@@ -36,28 +75,29 @@ export default function Share() {
     setOpen(false);
   };
 
-  const kakaoSend = (image: {
+  const kakaoSend = async (image: {
     imageUrl: string;
     imageWidth: number;
     imageHeight: number;
   }) => {
     const kakaoApiKey = String(import.meta.env.VITE_KAKAO_API_KEY || '').trim();
 
-    if (!window.Kakao || !window.Kakao.Share) {
-      toast.error('카카오 SDK 로드에 실패했습니다. 잠시 후 다시 시도해주세요.');
-      return;
-    }
-
     if (!kakaoApiKey) {
       toast.error('카카오 API 키가 설정되지 않았습니다.');
       return;
     }
 
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(kakaoApiKey);
-    }
-
     try {
+      await ensureKakaoSdkLoaded();
+
+      if (!window.Kakao || !window.Kakao.Share) {
+        throw new Error('Kakao SDK is unavailable');
+      }
+
+      if (!window.Kakao.isInitialized()) {
+        window.Kakao.init(kakaoApiKey);
+      }
+
       window.Kakao.Share.sendDefault({
         objectType: 'feed',
         content: {
@@ -82,17 +122,17 @@ export default function Share() {
     } catch (error) {
       console.error('[Kakao Share Error]', error);
       toast.error(
-        '카카오 공유 실패: Kakao Developers의 Web 도메인 등록을 확인해주세요.',
+        '카카오 공유 실패: SDK 차단(확장프로그램) 또는 Kakao Developers 도메인 등록을 확인해주세요.',
       );
     }
   };
 
-  const kakaoShareFeed = () => {
+  const kakaoShareFeed = async () => {
     const imageUrl = BANNERIMAGE.startsWith('http')
       ? BANNERIMAGE
       : `${kakaoShareUrl.replace(/\/$/, '')}${BANNERIMAGE}`;
 
-    kakaoSend({
+    await kakaoSend({
       imageUrl,
       imageWidth: 600,
       imageHeight: 450,
