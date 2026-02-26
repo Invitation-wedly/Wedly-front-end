@@ -19,7 +19,7 @@ export default function Contact() {
           <div>{GROOM_MOTHER_NAME}</div>
         </div>
         <span>의</span>
-        <span>차남</span>
+        <span>장남</span>
         <strong>{GROOM_NAME}</strong>
       </div>
       <div className='mt-5 flex items-center justify-center gap-3'>
