@@ -18,7 +18,6 @@ export default function WeddingInvitation() {
       <div className='text-center'>
         <div className='flex justify-center items-center gap-1 h-3 space-x-0.5'>
           <span>{GROOM_NAME}</span>
-          {/*<Separator orientation='vertical' className='bg-foreground' />*/}
             <span style={{ color: '#ff0000' }}>♥</span>
           <span>{BRIDE_NAME}</span>
         </div>
