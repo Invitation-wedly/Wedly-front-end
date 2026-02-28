@@ -3,6 +3,7 @@ import {
   GROOM_NAME,
   BRIDE_NAME,
   WEDDING_DATE,
+    WEDDING_TIME,
   WEDDING_LOCATION,
 } from '../../config';
 
@@ -21,7 +22,7 @@ export default function WeddingInvitation() {
           <span>{BRIDE_NAME}</span>
         </div>
         <div className='mt-4 text-sm text-gy-6 leading-7'>
-          {WEDDING_DATE}
+          {WEDDING_DATE} {WEDDING_TIME}
           <br />
           {WEDDING_LOCATION}
         </div>
