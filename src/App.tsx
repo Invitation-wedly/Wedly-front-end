@@ -103,8 +103,8 @@ function App() {
                 참석이 어려우신 분들을 위해
                 <br />
                 계좌번호를 기재하였습니다.
-                <br />
-                너그러운 마음으로 양해 부탁드립니다.
+                <br /><br />
+                보내주신 따뜻한 마음에 깊이 감사드립니다.
               </div>
             </div>
             <BankAccordion title='신랑측 계좌번호' bankList={GROOM_ACCOUNTS} />

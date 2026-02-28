@@ -179,7 +179,7 @@ export default function Gallery({ images }: { images: GalleryImageItem[] }) {
 
   return (
     <div>
-      <h2 className='text-center text-xl font-en pb-10'>From This Day</h2>
+      <h2 className='text-center text-xl font-en pb-10'>WEDDING GALLERY</h2>
 
       {/* 이미지 그리드 */}
       <div className='grid grid-cols-3 gap-2 mx-4'>

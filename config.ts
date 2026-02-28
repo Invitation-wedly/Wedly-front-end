@@ -12,10 +12,11 @@ export const BANNERIMAGE =
 
 // 결혼 초대장 문구 다음으로 보여질 이미지
 export const WEDDING_INVITATION_IMAGE =
-  '/image/gallery-21.jpeg';
+  '/image/invitation.jpeg';
 
 // 지도 & 날짜 정보
 export const WEDDING_DATE = '2026.05.10';
+export const WEDDING_DATE_DAY = '일';
 export const WEDDING_DATE2 = '2026-05-10';
 export const WEDDING_TIME = '11:00';
 export const WEDDING_LOCATION = '더 화이트베일 3층';

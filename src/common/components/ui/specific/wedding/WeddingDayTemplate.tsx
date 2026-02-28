@@ -8,6 +8,8 @@ import FadeIn from "../../Custom/FadeIn";
 import { ko } from "date-fns/locale";
 import {
     getWeddingScheduleDetails,
+    WEDDING_LOCATION,
+    WEDDING_LOCATION_NAME,
 } from '../../../../../../config';
 
 function WeddingDayTemplate() {
@@ -35,7 +37,9 @@ function WeddingDayTemplate() {
                     `}>
                         {format(date, "yyyy년 M월 d일 EEEE", { locale: ko })}
                         {'\n'}
-                        {format(date, "a h시 m분", { locale: ko })}
+                        {format(date, "a h시 mm분", { locale: ko })}
+                        {'\n'}
+                        {WEDDING_LOCATION} / {WEDDING_LOCATION_NAME}
                     </Text>
                 )}
             </FadeIn>
