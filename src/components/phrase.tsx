@@ -1,7 +1,7 @@
 export default function Phrase() {
   return (
     <p className='text-center leading-7'>
-      '진'실한 마음으로 서로를 방라보며
+      '진'실한 마음으로 서로를 바라보며
       <br />
       '배'려와 웃음으로 하루를 채워가고
       <br /><br />
