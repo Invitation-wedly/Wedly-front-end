@@ -103,7 +103,7 @@ export default function Share() {
         objectType: 'feed',
         content: {
           ...image,
-          title: `${GROOM_NAME} ❤ ${BRIDE_NAME} 결혼합니다`,
+          title: `${GROOM_NAME} ❤ ${BRIDE_NAME} 결혼합니다.`,
           description: `${WEDDING_DATE}. ${WEDDING_TIME} (${WEDDING_DATE_DAY})\n${WEDDING_LOCATION} ${WEDDING_LOCATION_NAME}`,
           link: {
             mobileWebUrl: kakaoShareUrl,
