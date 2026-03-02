@@ -148,9 +148,9 @@ export default function Share() {
           <p className='text-center text-[11px] font-semibold tracking-[0.2em] text-sky-600'>
             SHARE
           </p>
-          <h3 className='mt-1 text-center text-lg font-bold text-slate-800'>
+          <h2 className='mt-1 text-center text-lg font-bold text-slate-800'>
             청첩장 공유하기
-          </h3>
+          </h2>
           <p className='mt-2 text-center text-sm text-slate-600'>
             소중한 분들께 초대장을 전달해 주세요.
           </p>

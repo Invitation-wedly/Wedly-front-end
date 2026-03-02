@@ -119,7 +119,7 @@ function App() {
                 GUESTBOOK
               </p>
               <h2 className='mt-1 text-center text-2xl font-bold text-slate-800'>
-                Congratulatory Messages
+                방명록
               </h2>
               <p className='mt-2 text-center text-sm leading-6 text-slate-600'>
                 마음을 담은 한마디를 남겨주세요.
@@ -142,10 +142,11 @@ function App() {
         <div className='mx-auto w-full max-w-md px-6'>
           <div className='relative overflow-hidden rounded-2xl border border-rose-200/70 from-rose-50 via-white to-amber-50 px-5 py-6'>
             <div className='relative z-10 text-center'>
+              <p className="text-center text-[11px] font-semibold tracking-[0.2em] text-rose-600">UPLOAD</p>
               <h2 className='text-center text-2xl font-bold text-slate-800'>
-                Photo Upload
+                사진 업로드
               </h2>
-              <div className='inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-rose-600 ring-1 ring-rose-200'>
+              <div className='mt-2 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-rose-600 ring-1 ring-rose-200'>
                 <Camera className='h-3.5 w-3.5' />
                 BEST PHOTO
               </div>
