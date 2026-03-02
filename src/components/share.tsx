@@ -7,7 +7,7 @@ import {
   BANNERIMAGE,
   BRIDE_NAME,
   GROOM_NAME,
-  WEDDING_DATE,
+  WEDDING_DATE, WEDDING_DATE_DAY,
   WEDDING_LOCATION,
   WEDDING_LOCATION_NAME,
   WEDDING_TIME,
@@ -104,7 +104,7 @@ export default function Share() {
         content: {
           ...image,
           title: `${GROOM_NAME} ❤ ${BRIDE_NAME} 결혼합니다`,
-          description: `${WEDDING_DATE} ${WEDDING_TIME}\n${WEDDING_LOCATION} ${WEDDING_LOCATION_NAME}`,
+          description: `${WEDDING_DATE} ${WEDDING_TIME} (${WEDDING_DATE_DAY})\n${WEDDING_LOCATION} ${WEDDING_LOCATION_NAME}`,
           link: {
             mobileWebUrl: kakaoShareUrl,
             webUrl: kakaoShareUrl,
