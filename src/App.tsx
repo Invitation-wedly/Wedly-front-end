@@ -15,12 +15,14 @@ import CommentList from '@/components/comment-list';
 import Share from '@/components/share';
 import BannerImage from '@/components/banner-image';
 import BackgroundMusic from '@/components/background-music';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Camera, ExternalLink } from 'lucide-react';
 import {
   BRIDE_ACCOUNTS,
   BEST_PHOTO_FORM_DESCRIPTION,
+  BEST_PHOTO_FORM_OPEN_AT,
   BEST_PHOTO_FORM_URL,
+  BEST_PHOTO_MISSIONS,
   GALLERY_IMAGES,
   GROOM_ACCOUNTS,
   POSTER_URL,
@@ -31,7 +33,25 @@ import {
 function App() {
   const [hasVideoError, setHasVideoError] = useState(false);
   const [, setMessageAdded] = useState(false);
+  const [isPhotoUploadOpen, setIsPhotoUploadOpen] = useState(
+    () => Date.now() >= new Date(BEST_PHOTO_FORM_OPEN_AT).getTime(),
+  );
   const hasVideo = Boolean(VIDEO_URL) && !hasVideoError;
+
+  useEffect(() => {
+    const openAt = new Date(BEST_PHOTO_FORM_OPEN_AT).getTime();
+
+    if (Number.isNaN(openAt) || Date.now() >= openAt) {
+      setIsPhotoUploadOpen(true);
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setIsPhotoUploadOpen(true);
+    }, openAt - Date.now());
+
+    return () => window.clearTimeout(timeoutId);
+  }, []);
 
   return (
     <>
@@ -140,28 +160,76 @@ function App() {
           </Intersect>
         </section>
         <div className='mx-auto w-full max-w-md px-6'>
-          <div className='relative overflow-hidden rounded-2xl border border-rose-200/70 from-rose-50 via-white to-amber-50 px-5 py-6'>
+          <div className='relative overflow-hidden rounded-[28px] border border-stone-200 bg-[#f8f3ee] px-6 py-8 shadow-[0_12px_30px_rgba(120,104,88,0.08)]'>
             <div className='relative z-10 text-center'>
-              <p className="text-center text-[11px] font-semibold tracking-[0.2em] text-rose-600">UPLOAD</p>
-              <h2 className='text-center text-2xl font-bold text-slate-800'>
-                사진 업로드
+              <p className='text-center text-[11px] font-semibold tracking-[0.2em] text-rose-600'>
+                GUEST SNAP
+              </p>
+              <h2 className='mt-1 mb-5 text-center text-2xl font-bold text-slate-800'>
+                게스트 스냅
               </h2>
-              <div className='mt-2 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-rose-600 ring-1 ring-rose-200'>
-                <Camera className='h-3.5 w-3.5' />
-                BEST PHOTO
+              <div className='border-t border-dashed border-stone-300/90 pb-8' />
+              <p className='text-[22px] leading-none text-stone-500'>📸 저희의 스냅 작가가 되어주세요! 📸</p>
+              <div className='mt-7 space-y-5 text-stone-600'>
+                <div className='space-y-2'>
+                  <p className='text-[22px] leading-8'>[미션! 이 순간들을 놓치지 마세요!]</p>
+                  <ol className='space-y-1 text-[18px] leading-8'>
+                    {BEST_PHOTO_MISSIONS.slice(0, 8).map((mission, index) => (
+                      <li key={mission}>
+                        {index + 1}. {mission}
+                      </li>
+                    ))}
+                  </ol>
+                  <p className='text-[18px] leading-8'>(오늘 주인공은 저희뿐만이 아니에요!)</p>
+                  <ol
+                    className='space-y-1 text-[18px] leading-8'
+                    start={9}
+                  >
+                    {BEST_PHOTO_MISSIONS.slice(8).map((mission, index) => (
+                      <li key={mission}>
+                        {index + 9}. {mission}
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+
+                <div className='space-y-2 text-[15px] leading-8'>
+                  <p className='inline-flex items-center justify-center font-bold'>
+                    🎁 가장 멋진 사진을 남겨주신 분께 기프티콘을 쏩니다!
+                  </p>
+                </div>
+
+                <div className='space-y-1 text-[19px] leading-8 text-stone-700'>
+                  <p>당일날, 아래 공유 버튼을 통해 올려주세요!</p>
+                  <p>많은 참여 부탁드려요! 💖</p>
+                </div>
               </div>
-              <p className='mt-3 text-sm leading-6 text-gray-700'>
+
+              {isPhotoUploadOpen ? (
+                <a
+                  href={BEST_PHOTO_FORM_URL}
+                  target='_blank'
+                  rel='noreferrer'
+                  className='group mx-auto mt-8 inline-flex h-14 w-full max-w-xs items-center justify-center gap-2 rounded-2xl bg-[#efcfb9] px-5 text-[17px] text-white shadow-[0_10px_24px_rgba(208,171,145,0.35)] transition hover:bg-[#e6bea2]'
+                >
+                  <Camera className='h-4 w-4' />
+                  사진 및 영상 업로드
+                  <ExternalLink className='h-4 w-4 transition-transform group-hover:translate-x-0.5' />
+                </a>
+              ) : (
+                <button
+                  type='button'
+                  disabled
+                  aria-disabled='true'
+                  className='mx-auto mt-8 inline-flex h-14 w-full max-w-xs items-center justify-center rounded-2xl bg-[#efcfb9]/75 px-5 text-[17px] text-white/95 shadow-[0_10px_24px_rgba(208,171,145,0.2)] opacity-80'
+                >
+                  사진 및 영상 업로드 (5월 10일 OPEN)
+                </button>
+              )}
+
+              <p className='mt-3 text-[13px] leading-6 text-stone-500'>
                 {BEST_PHOTO_FORM_DESCRIPTION}
               </p>
-              <a
-                href={BEST_PHOTO_FORM_URL}
-                target='_blank'
-                rel='noreferrer'
-                className='group mx-auto mt-4 inline-flex h-11 w-full max-w-xs items-center justify-center gap-1.5 rounded-full bg-rose-500 px-4 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-rose-600'
-              >
-                사진 업로드하러 가기
-                <ExternalLink className='h-4 w-4 transition-transform group-hover:translate-x-0.5' />
-              </a>
             </div>
           </div>
         </div>

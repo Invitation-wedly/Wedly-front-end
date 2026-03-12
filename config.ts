@@ -37,6 +37,18 @@ export const WEDDING_MAP_LAT = 37.4838261; // 위도
 export const BEST_PHOTO_FORM_URL = 'https://forms.gle/L8cEBH2nQtxpUTFx9';
 export const BEST_PHOTO_FORM_DESCRIPTION =
   '여러분이 생각하시는 최고의 사진을 10장 올려주세요.';
+export const BEST_PHOTO_FORM_OPEN_AT = '2026-05-10T00:00:00+09:00';
+export const BEST_PHOTO_MISSIONS = [
+  '신부 대기실에서 설렘 가득한 순간',
+  '웃음 만개! 행복한 신랑신부',
+  '눈빛 교환! 마주보는 신랑신부',
+  '멋짐 폭발 신랑 입장',
+  '아름다운 순간 신부 입장',
+  '행복한 피날레 신랑신부 행진',
+  '여러분의 미소',
+  '가족 & 친구들과 함께한 순간',
+  "감성 한 스푼 '예술이란 이런 것이다' 한 컷!",
+];
 
 export function getWeddingScheduleDetails() {
   const dateString = `${WEDDING_DATE2} ${WEDDING_TIME}`;
