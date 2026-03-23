@@ -13,7 +13,7 @@ import {
   WEDDING_TIME,
 } from '../../config';
 
-const DEFAULT_SHARE_URL = 'https://wedding-invitation-two-alpha.vercel.app/';
+const DEFAULT_SHARE_URL = 'https://our-may-10.vercel.app/';
 const KAKAO_SDK_URL = 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js';
 const KAKAO_SDK_INTEGRITY =
   'sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Hs90nka';

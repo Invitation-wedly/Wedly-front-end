@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-const DEFAULT_PROD_URL = 'https://wedding-invitation-two-alpha.vercel.app/';
+const DEFAULT_PROD_URL = 'https://our-may-10.vercel.app/';
 
 function normalizeSiteUrl(value: string | undefined): string | undefined {
   if (!value) return undefined;
