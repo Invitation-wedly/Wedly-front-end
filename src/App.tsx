@@ -20,35 +20,35 @@ import { Camera, ExternalLink } from 'lucide-react';
 import {
   BRIDE_ACCOUNTS,
   BEST_PHOTO_FORM_DESCRIPTION,
-  BEST_PHOTO_FORM_OPEN_AT,
   BEST_PHOTO_FORM_URL,
   BEST_PHOTO_MISSIONS,
   GALLERY_IMAGES,
   GROOM_ACCOUNTS,
+  getBestPhotoFormOpenDetails,
   POSTER_URL,
   VIDEO_URL,
   WEDDING_INVITATION_IMAGE,
+  isBestPhotoFormOpen,
 } from '../config';
 
 function App() {
   const [hasVideoError, setHasVideoError] = useState(false);
   const [, setMessageAdded] = useState(false);
-  const [isPhotoUploadOpen, setIsPhotoUploadOpen] = useState(
-    () => Date.now() >= new Date(BEST_PHOTO_FORM_OPEN_AT).getTime(),
-  );
+  const [nowTimestamp, setNowTimestamp] = useState(Date.now);
+  const isPhotoUploadOpen = isBestPhotoFormOpen(nowTimestamp);
   const hasVideo = Boolean(VIDEO_URL) && !hasVideoError;
 
   useEffect(() => {
-    const openAt = new Date(BEST_PHOTO_FORM_OPEN_AT).getTime();
+    const { isValidDate, timestamp } = getBestPhotoFormOpenDetails();
+    setNowTimestamp(Date.now());
 
-    if (Number.isNaN(openAt) || Date.now() >= openAt) {
-      setIsPhotoUploadOpen(true);
+    if (!isValidDate || Date.now() >= timestamp) {
       return undefined;
     }
 
     const timeoutId = window.setTimeout(() => {
-      setIsPhotoUploadOpen(true);
-    }, openAt - Date.now());
+      setNowTimestamp(Date.now());
+    }, timestamp - Date.now());
 
     return () => window.clearTimeout(timeoutId);
   }, []);

@@ -50,16 +50,54 @@ export const BEST_PHOTO_MISSIONS = [
   "감성 한 스푼 '예술이란 이런 것이다' 한 컷!",
 ];
 
+export function getBestPhotoFormOpenDetails() {
+  const date = new Date(BEST_PHOTO_FORM_OPEN_AT);
+  const timestamp = date.getTime();
+  const isValidDate = !Number.isNaN(timestamp);
+
+  return {
+    date,
+    timestamp,
+    isValidDate,
+  };
+}
+
+export function isBestPhotoFormOpen(now = Date.now()) {
+  const { isValidDate, timestamp } = getBestPhotoFormOpenDetails();
+
+  return isValidDate && now >= timestamp;
+}
+
 export function getWeddingScheduleDetails() {
   const dateString = `${WEDDING_DATE2} ${WEDDING_TIME}`;
   const date = parse(dateString, 'yyyy-MM-dd HH:mm', new Date());
-  const isValidDate = !isNaN(date.getTime());
+  const timestamp = date.getTime();
+  const isValidDate = !Number.isNaN(timestamp);
 
   return {
     dateString,
     date,
-    isValidDate
+    timestamp,
+    isValidDate,
   }
+}
+
+export function getWeddingCalendarRange() {
+  const { date, isValidDate } = getWeddingScheduleDetails();
+
+  if (!isValidDate) {
+    return {
+      from: undefined,
+      to: undefined,
+    };
+  }
+
+  const year = date.getFullYear();
+
+  return {
+    from: new Date(year, 0, 1),
+    to: new Date(year, 11, 31),
+  };
 }
 
 // 신랑 & 신부 정보

@@ -1,10 +1,10 @@
 import { Calendar } from '@/common/components/ui/calendar';
-import { WEDDING_DATE } from '../../config';
-import { parse } from 'date-fns';
+import { getWeddingCalendarRange, getWeddingScheduleDetails } from '../../config';
 import { ko } from 'date-fns/locale';
 
 export default function CalendarScreen() {
-  const weddingDate = parse(WEDDING_DATE, 'yyyy.MM.dd', new Date());
+  const { date: weddingDate } = getWeddingScheduleDetails();
+  const { from, to } = getWeddingCalendarRange();
 
   return (
     <>
@@ -18,9 +18,13 @@ export default function CalendarScreen() {
           selected={weddingDate}
           locale={ko}
           defaultMonth={weddingDate}
-          disabled={(date) =>
-            date < new Date('2025-01-01') || date > new Date('2025-12-31')
-          }
+          disabled={(date) => {
+            if (!from || !to) {
+              return false;
+            }
+
+            return date < from || date > to;
+          }}
         />
       </div>
     </>

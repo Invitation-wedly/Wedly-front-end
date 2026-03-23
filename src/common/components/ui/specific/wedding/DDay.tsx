@@ -27,10 +27,10 @@ const ZERO_REMAINING_TIME: RemainTime = {
 function DDay() {
     const [remainingTime, setRemainingTime] = useState<RemainTime>(ZERO_REMAINING_TIME);
     const { isValidDate, weddingTimeMs } = useMemo(() => {
-        const { date, isValidDate } = getWeddingScheduleDetails();
+        const { isValidDate, timestamp } = getWeddingScheduleDetails();
         return {
             isValidDate,
-            weddingTimeMs: date.getTime(),
+            weddingTimeMs: timestamp,
         };
     }, []);
 
