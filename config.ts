@@ -123,7 +123,7 @@ export const BRIDE_CONTACT = [
 // 계좌번호 정보
 export const GROOM_ACCOUNTS = [
   { holder: '정진배', bank: '우리은행', number: '1002-395-082800' },
-  { holder: '정하용', bank: '신한은행', number: '389-12-19703-0' },
+  { holder: '정하용', bank: '신한은행', number: '110-627-011527' },
   { holder: '강영숙', bank: '새마을금고', number: '0901-10-009213-1' },
 ];
 
