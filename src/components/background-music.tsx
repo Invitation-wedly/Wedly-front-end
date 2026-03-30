@@ -7,6 +7,7 @@ export default function BackgroundMusic() {
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [hasUserInteraction, setHasUserInteraction] = useState<boolean>(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const shouldResumeOnForegroundRef = useRef(false);
 
   const startPlayback = useCallback(async (withSound: boolean) => {
     const audio = audioRef.current;
@@ -22,6 +23,26 @@ export default function BackgroundMusic() {
       console.error('오디오 재생 실패:', error);
       setIsPlaying(false);
     }
+  }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    const handleEnded = () => setIsPlaying(false);
+
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
+    audio.addEventListener('ended', handleEnded);
+
+    return () => {
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
+      audio.removeEventListener('ended', handleEnded);
+      audio.pause();
+    };
   }, []);
 
   useEffect(() => {
@@ -56,8 +77,53 @@ export default function BackgroundMusic() {
     };
   }, [hasUserInteraction, startPlayback]);
 
+  useEffect(() => {
+    const pauseForBackground = () => {
+      const audio = audioRef.current;
+      if (!audio) return;
+
+      shouldResumeOnForegroundRef.current = !audio.paused;
+      audio.pause();
+    };
+
+    const resumeFromBackground = () => {
+      if (!hasUserInteraction || !shouldResumeOnForegroundRef.current) return;
+
+      shouldResumeOnForegroundRef.current = false;
+      void startPlayback(!isMuted);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        pauseForBackground();
+        return;
+      }
+
+      resumeFromBackground();
+    };
+
+    const handlePageHide = () => {
+      pauseForBackground();
+    };
+
+    const handlePageShow = () => {
+      resumeFromBackground();
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('pagehide', handlePageHide);
+    window.addEventListener('pageshow', handlePageShow);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('pagehide', handlePageHide);
+      window.removeEventListener('pageshow', handlePageShow);
+    };
+  }, [hasUserInteraction, isMuted, startPlayback]);
+
   const handleInitialPlay = () => {
     setHasUserInteraction(true);
+    shouldResumeOnForegroundRef.current = true;
     void startPlayback(true);
   };
 
@@ -66,11 +132,12 @@ export default function BackgroundMusic() {
     if (!audio) return;
 
     if (isPlaying) {
+      shouldResumeOnForegroundRef.current = false;
       audio.pause();
-      setIsPlaying(false);
       setIsMuted(false);
     } else {
       setHasUserInteraction(true);
+      shouldResumeOnForegroundRef.current = true;
       void startPlayback(true);
     }
   };
