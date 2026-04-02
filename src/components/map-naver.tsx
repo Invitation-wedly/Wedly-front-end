@@ -65,16 +65,10 @@ export default function MapNaver() {
           keyboardShortcuts: false,
         });
 
-        const marker = new naverMaps.Marker({
+        new naverMaps.Marker({
           position,
           map: mapInstance,
         });
-
-        const infoWindow = new naverMaps.InfoWindow({
-          borderColor: 'transparent',
-        });
-
-        infoWindow.open(mapInstance, marker);
         setMapAvailability(true);
       } catch (error) {
         console.error('[MapNaver] 지도 초기화 실패:', error);
