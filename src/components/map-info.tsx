@@ -40,11 +40,14 @@ export default function MapInfo() {
       )},${WEDDING_MAP_LAT},${WEDDING_MAP_LOT}`,
     },
   ];
+  const transportLabelClass =
+    'w-16 shrink-0 text-lg font-semibold leading-8 text-foreground';
+  const transportTextClass = 'flex-1 space-y-2 text-[17px] leading-8';
 
   return (
     <div className='mt-10 mx-8'>
       <div className='flex justify-between items-center'>
-        <p>
+        <p className='text-[24px]'>
           {WEDDING_ADDRESS}
           <br />
           <strong>{WEDDING_LOCATION} / {WEDDING_LOCATION_NAME}</strong>
@@ -62,32 +65,41 @@ export default function MapInfo() {
       </div>
 
       <div className='mt-10 space-y-8 text-gray-500 dark:text-foreground'>
-        <div className='flex items-center'>
-          <span className='w-14 text-foreground'>지하철</span>
-          <Separator orientation='vertical' className='bg-foreground' />
-          <div className='text-xs space-y-1'>
+        <div className='flex items-start gap-1'>
+          <span className={transportLabelClass}>지하철</span>
+          <Separator
+            orientation='vertical'
+            className='self-stretch bg-foreground'
+          />
+          <div className={transportTextClass}>
             {WEDDING_LOCATION_SUBWAY.map((subway, index) => (
               <p key={index}>{subway}</p>
             ))}
           </div>
         </div>
-        <div className='flex items-center'>
-          <span className=' w-14 text-foreground'>버스</span>
-          <Separator orientation='vertical' className='bg-foreground' />
-          <div className='text-xs space-y-1'>
+        <div className='flex items-start gap-1'>
+          <span className={transportLabelClass}>버스</span>
+          <Separator
+            orientation='vertical'
+            className='self-stretch bg-foreground'
+          />
+          <div className={transportTextClass}>
             {WEDDING_LOCATION_BUS.map((bus, index) => (
               <p key={index}>{bus}</p>
             ))}
           </div>
         </div>
-        <div className='flex items-center'>
-          <span className='w-14 text-foreground'>주차</span>
-          <Separator orientation='vertical' className='bg-foreground' />
-          <div className='text-xs space-y-1'>
+        <div className='flex items-start gap-1'>
+          <span className={transportLabelClass}>주차</span>
+          <Separator
+            orientation='vertical'
+            className='self-stretch bg-foreground'
+          />
+          <div className={transportTextClass}>
             {WEDDING_PARKING.map((parking, index) => (
               <p key={index}>{parking}</p>
             ))}
-            <div className='flex gap-0.5'>
+            <div className='flex gap-1'>
               *
               <span>
                 주차장 이용이 혼잡하오니 불편하시더라도 대중교통 이용을 권장
@@ -98,8 +110,10 @@ export default function MapInfo() {
         </div>
 
         <div className='rounded-xl border border-gray-200 bg-gray-100 px-4 py-5'>
-          <h3 className='text-sm font-semibold text-foreground'>네비게이션</h3>
-          <p className='mt-2 text-xs text-gray-500'>
+          <h3 className='text-[20px] font-semibold text-foreground'>
+            네비게이션
+          </h3>
+          <p className='mt-2 text-[15px] text-gray-500'>
             원하시는 앱을 선택하시면 길안내가 시작됩니다.
           </p>
           <div className='mt-4 grid grid-cols-3 gap-2'>
