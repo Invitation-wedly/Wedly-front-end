@@ -55,7 +55,7 @@ export default function MapNaver() {
 
         mapInstance = new naverMaps.Map(mapRef.current, {
           center: position,
-          zoom: 18,
+          zoom: 16,
           draggable: false,
           zoomControl: false,
           scrollWheel: false,
