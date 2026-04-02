@@ -55,7 +55,7 @@ export default function MapNaver() {
 
         mapInstance = new naverMaps.Map(mapRef.current, {
           center: position,
-          zoom: 16,
+          zoom: 17,
           draggable: false,
           zoomControl: false,
           scrollWheel: false,
@@ -71,17 +71,17 @@ export default function MapNaver() {
           map: mapInstance,
         });
 
-        const infoWindow = new naverMaps.InfoWindow({
-          content: `
-            <div class="p-4 bg-white shadow-lg text-center">
-              <h3 class="font-bold text-lg">더 화이트베일</h3>
-              <p class="text-gray-600">${WEDDING_ADDRESS}</p>
-            </div>
-          `,
-          borderColor: 'transparent',
-        });
-
-        infoWindow.open(mapInstance, marker);
+        // const infoWindow = new naverMaps.InfoWindow({
+        //   content: `
+        //     <div class="p-4 bg-white shadow-lg text-center">
+        //       <h3 class="font-bold text-lg">더 화이트베일</h3>
+        //       <p class="text-gray-600">${WEDDING_ADDRESS}</p>
+        //     </div>
+        //   `,
+        //   borderColor: 'transparent',
+        // });
+        //
+        // infoWindow.open(mapInstance, marker);
         setMapAvailability(true);
       } catch (error) {
         console.error('[MapNaver] 지도 초기화 실패:', error);
