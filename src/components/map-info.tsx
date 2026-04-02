@@ -42,12 +42,12 @@ export default function MapInfo() {
   ];
   const transportLabelClass =
     'w-16 shrink-0 text-lg font-semibold leading-8 text-foreground';
-  const transportTextClass = 'flex-1 space-y-2 text-[17px] leading-8';
+  const transportTextClass = 'flex-1 space-y-2 text-[14px] leading-8';
 
   return (
     <div className='mt-10 mx-8'>
       <div className='flex justify-between items-center'>
-        <p className='text-[24px]'>
+        <p className='text-[20px]'>
           {WEDDING_ADDRESS}
           <br />
           <strong>{WEDDING_LOCATION} / {WEDDING_LOCATION_NAME}</strong>
@@ -65,7 +65,7 @@ export default function MapInfo() {
       </div>
 
       <div className='mt-10 space-y-8 text-gray-500 dark:text-foreground'>
-        <div className='flex items-start gap-1'>
+        <div className='flex items-start gap-0'>
           <span className={transportLabelClass}>지하철</span>
           <Separator
             orientation='vertical'
@@ -77,7 +77,7 @@ export default function MapInfo() {
             ))}
           </div>
         </div>
-        <div className='flex items-start gap-1'>
+        <div className='flex items-start gap-0'>
           <span className={transportLabelClass}>버스</span>
           <Separator
             orientation='vertical'
@@ -89,7 +89,7 @@ export default function MapInfo() {
             ))}
           </div>
         </div>
-        <div className='flex items-start gap-1'>
+        <div className='flex items-start gap-0'>
           <span className={transportLabelClass}>주차</span>
           <Separator
             orientation='vertical'
