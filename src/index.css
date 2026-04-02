@@ -408,3 +408,8 @@
 .disabled {
   display: none;
 }
+
+.map-wrapper {
+  pointer-events: none;
+  touch-action: pan-y;
+}

@@ -109,7 +109,7 @@ export default function MapNaver() {
 
   if (!isMapAvailable) {
     return (
-      <div className='w-full'>
+      <div className='w-full map-wrapper'>
         <div className='flex h-[400px] items-center justify-center bg-gray-100 px-6 text-center text-sm text-gray-600 shadow-md'>
           지도 로딩에 실패했습니다.
           <br />
@@ -120,7 +120,7 @@ export default function MapNaver() {
   }
 
   return (
-    <div className='w-full'>
+    <div className='w-full map-wrapper'>
       <div ref={mapRef} className='w-full h-[400px] touch-none shadow-md' />
     </div>
   );
