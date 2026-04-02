@@ -110,7 +110,7 @@ export default function MapNaver() {
   if (!isMapAvailable) {
     return (
       <div className='w-full map-wrapper'>
-        <div className='flex h-[400px] items-center justify-center bg-gray-100 px-6 text-center text-sm text-gray-600 shadow-md'>
+        <div className='flex h-[300px] items-center justify-center bg-gray-100 px-6 text-center text-sm text-gray-600 shadow-md'>
           지도 로딩에 실패했습니다.
           <br />
           아래 네비게이션 버튼을 이용해 주세요.
@@ -121,7 +121,7 @@ export default function MapNaver() {
 
   return (
     <div className='w-full map-wrapper'>
-      <div ref={mapRef} className='w-full h-[400px] touch-none shadow-md' />
+      <div ref={mapRef} className='w-full h-[300px] touch-none shadow-md' />
     </div>
   );
 }
