@@ -1,5 +1,4 @@
 import {
-  WEDDING_ADDRESS,
   WEDDING_MAP_LAT,
   WEDDING_MAP_LOT,
 } from '../../config';
