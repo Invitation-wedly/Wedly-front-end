@@ -66,10 +66,10 @@ export default function MapNaver() {
           keyboardShortcuts: false,
         });
 
-        const marker = new naverMaps.Marker({
-          position,
-          map: mapInstance,
-        });
+        // const marker = new naverMaps.Marker({
+        //   position,
+        //   map: mapInstance,
+        // });
 
         // const infoWindow = new naverMaps.InfoWindow({
         //   content: `
