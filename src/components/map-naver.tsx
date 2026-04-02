@@ -4,6 +4,19 @@ import {
 } from '../../config';
 import { useEffect, useRef, useState } from 'react';
 
+const NAVER_MARKER_ICON = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="38" viewBox="0 0 28 38" fill="none">
+    <path
+      d="M14 1C7.373 1 2 6.373 2 13c0 8.325 6.572 15.977 11.17 22.434a1 1 0 0 0 1.66 0C19.428 28.977 26 21.325 26 13 26 6.373 20.627 1 14 1Z"
+      fill="#2F80ED"
+      stroke="white"
+      stroke-width="2"
+    />
+    <circle cx="14" cy="13" r="5.5" fill="white" />
+    <circle cx="14" cy="13" r="2.75" fill="#2F80ED" />
+  </svg>
+`)}`;
+
 export default function MapNaver() {
   const mapRef = useRef<HTMLDivElement>(null);
   const [isMapAvailable, setIsMapAvailable] = useState(true);
@@ -68,6 +81,14 @@ export default function MapNaver() {
         new naverMaps.Marker({
           position,
           map: mapInstance,
+          clickable: false,
+          icon: {
+            url: NAVER_MARKER_ICON,
+            size: new naverMaps.Size(28, 38),
+            scaledSize: new naverMaps.Size(28, 38),
+            origin: new naverMaps.Point(0, 0),
+            anchor: new naverMaps.Point(14, 38),
+          },
         });
         setMapAvailability(true);
       } catch (error) {
