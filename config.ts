@@ -24,7 +24,12 @@ export const WEDDING_LOCATION_NAME = 'V홀';
 export const WEDDING_ADDRESS = '서울 서초구 서초동 1445-14';
 export const WEDDING_LOCATION_SUBWAY = [
   '[3호선] 남부터미널역 4-1번 출구 바로 앞',
-  '[3호선] 남부터미널역 4번 출구 도보 2분 이내'
+  '[3호선] 남부터미널역 4번 출구 도보 2분 이내',
+];
+export const WEDDING_LOCATION_SUBWAY_TRANSFER = [
+  '교대역(2호선)에서 3호선 환승',
+  '고속터미널역(7·9호선)에서 3호선 환승',
+  '양재역(신분당선)에서 3호선 환승',
 ];
 export const WEDDING_LOCATION_BUS = [
   '지선버스(G, 초록색) : 4319(사당-남부터미널-잠실)',

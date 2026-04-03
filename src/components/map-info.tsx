@@ -12,6 +12,7 @@ import {
   WEDDING_LOCATION,
   WEDDING_LOCATION_NAME,
   WEDDING_LOCATION_SUBWAY,
+  WEDDING_LOCATION_SUBWAY_TRANSFER,
   WEDDING_MAP_LAT,
   WEDDING_MAP_LOT,
   WEDDING_PARKING,
@@ -75,6 +76,16 @@ export default function MapInfo() {
             {WEDDING_LOCATION_SUBWAY.map((subway, index) => (
               <p key={index}>{subway}</p>
             ))}
+            <div className='mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-4 text-[15px] leading-7 text-stone-700'>
+              <p className='text-[16px] font-semibold text-amber-900'>
+                주요 환승역 안내
+              </p>
+              <div className='mt-2 space-y-1'>
+                {WEDDING_LOCATION_SUBWAY_TRANSFER.map((transfer, index) => (
+                  <p key={index}>{transfer}</p>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
         <div className='flex items-start gap-0'>
